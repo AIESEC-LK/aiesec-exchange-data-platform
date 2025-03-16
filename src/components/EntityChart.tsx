@@ -18,8 +18,10 @@ const chartConfig = {
 
 export function EntityChart({
   inputData,
+  status,
 }: {
   inputData: { entity: string; count: number }[];
+  status: string;
 }) {
   const colors = [
     "hsl(210, 100%, 36%)",
@@ -40,7 +42,7 @@ export function EntityChart({
   return (
     <Card className="h-[500px]">
       <CardHeader>
-        <CardTitle>Applications By Selected Project</CardTitle>
+        <CardTitle>{status} By Selected Project</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
