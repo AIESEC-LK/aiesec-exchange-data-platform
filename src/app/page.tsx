@@ -33,16 +33,18 @@ export default function Home() {
   }, []);
   const initialFunction = product === "volunteer" ? "iGV" : "iGTe";
   const [functionName, setFunctionName] = useState<string>(initialFunction);
-  const handleSetFunction = useCallback((value: string) => {
-    setFunctionName(value);
-    if (value === "iGTa" || value === "iGTe") {
-      setFilterData((prev) => ({ ...prev, product: "iGT" }));
-    } else if (value === "oGTa" || value === "oGTe") {
-      setFilterData((prev) => ({ ...prev, product: "oGT" }));
+  const handleFilterDataChange = useCallback((key: string, value: string) => {
+    if (key === "product") {
+      if (value === "iGTa" || value === "iGTe") {
+        setFilterData((prev) => ({ ...prev, [key]: "iGT" }));
+        setFunctionName("iGT");
+      } else if (value === "oGTa" || value === "oGTe") {
+        setFilterData((prev) => ({ ...prev, [key]: "oGT" }));
+        setFunctionName("oGT");
+      }
     } else {
-      setFilterData((prev) => ({ ...prev, product: value }));
+      setFilterData((prev) => ({ ...prev, [key]: value }));
     }
-    console.log("Value setted in Page:", value);
   }, []);
 
   //need to fix which data to use based on incoming or outgoing
@@ -135,7 +137,11 @@ export default function Home() {
       </div>
 
       {/* Filters Section */}
-      <DashboardFilters product={product} setFunction={handleSetFunction} />
+      <DashboardFilters
+        selectedProduct={product}
+        filterData={filterData}
+        setFilterData={handleFilterDataChange}
+      />
 
       {/* First Row: Entity Ranking + Pie Chart + Entity Chart*/}
       <div className="grid grid-cols-3 gap-6">
@@ -147,7 +153,10 @@ export default function Home() {
         </div>
         <div className="flex flex-col p-4 rounded-lg h-full">
           {/* TODO: Need to get the status from filter bar */}
-          <EntityChart status="" inputData={entityChartData} />
+          <EntityChart
+            status={filterData.status || "applied"}
+            inputData={entityChartData}
+          />
         </div>
       </div>
 

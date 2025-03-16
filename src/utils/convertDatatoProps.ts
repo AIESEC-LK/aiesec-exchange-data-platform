@@ -124,10 +124,17 @@ export const convertEntityDataToArray = (
 ): EntityEntry[] => {
   console.debug("convertEntityDataToArray - input:", data);
   if (!data) return [];
-  const result = Object.entries(data).map(([entity, count]) => ({
-    entity,
-    count,
-  }));
+  const result = Object.entries(data).map(([entity, count]) => {
+    let shortEntity = entity;
+    if (entity.toUpperCase() === "COLOMBO SOUTH") shortEntity = "CS";
+    else if (entity.toUpperCase() === "COLOMBO NORTH") shortEntity = "CN";
+    else if (entity.toUpperCase() === "COLOMBO CENTRAL") shortEntity = "CC";
+    else if (entity.toUpperCase() === "KANDY") shortEntity = "Kan";
+    else if (entity.toUpperCase() === "RAJARATA") shortEntity = "Raj";
+    else if (entity.toUpperCase() === "RUHUNA") shortEntity = "Ruh";
+    else if (entity === "MC Sri Lanka") shortEntity = "MC";
+    return { entity: shortEntity, count };
+  });
   console.debug("convertEntityDataToArray - output:", result);
   return result;
 };
