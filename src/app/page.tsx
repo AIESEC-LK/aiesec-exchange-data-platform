@@ -35,7 +35,13 @@ export default function Home() {
   const [functionName, setFunctionName] = useState<string>(initialFunction);
   const handleSetFunction = useCallback((value: string) => {
     setFunctionName(value);
-    setFilterData((prev) => ({ ...prev, product: value }));
+    if (value === "iGTa" || value === "iGTe") {
+      setFilterData((prev) => ({ ...prev, product: "iGT" }));
+    } else if (value === "oGTa" || value === "oGTe") {
+      setFilterData((prev) => ({ ...prev, product: "oGT" }));
+    } else {
+      setFilterData((prev) => ({ ...prev, product: value }));
+    }
     console.log("Value setted in Page:", value);
   }, []);
 
