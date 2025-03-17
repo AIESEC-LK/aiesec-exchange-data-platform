@@ -28,41 +28,42 @@ export default function Navbar({
   ); // useCallback with dependency array ensures the function instance is stable
 
   return (
-    <nav
-      className="p-4 flex items-center justify-between"
-      style={{ backgroundColor: "" }}
-    >
-      {/* Left: Product Selection Dropdown */}
-      <Select onValueChange={(e) => handleProductChange(e)} value={product}>
-        <SelectTrigger className="w-[220px] bg-white">
-          <SelectValue placeholder="Select Product" />
-        </SelectTrigger>
-        <SelectContent className="bg-white text-black">
-          <SelectItem value="volunteer" className="bg-white">
-            <Globe className="mr-2 h-4 w-4" />
-            Global Volunteer
-          </SelectItem>
-          <SelectItem value="talent/teacher" className="bg-white">
-            <GraduationCap className="mr-2 h-4 w-4" />
-            Global Talent/ Teacher
-          </SelectItem>
-        </SelectContent>
-      </Select>
-
-      {/* Title */}
-      <h1 className="text-white text-lg font-bold flex-1 text-center md:text-center md:ml-4">
-        AIESEC SRI LANKA OPS DASHBOARD
-      </h1>
-
-      {/* Right: Menu Options (Hidden in Mobile) */}
-      <div className="hidden md:flex space-x-4 text-white">
-        {/* Additional menu items can be added here */}
+    <nav className="p-4" style={{ backgroundColor: "" }}>
+      <div className="flex md:items-center md:justify-center flex-col md:flex-row gap-4">
+        {" "}
+        {/* md:justify-center to center title */}
+        {/* Title - Top on Mobile, Center on Desktop */}
+        <div className="w-full md:w-auto text-center">
+          {" "}
+          {/* Removed md:text-left, kept text-center for all views */}
+          <h1 className="text-white text-lg font-bold">
+            AIESEC SRI LANKA OPS DASHBOARD
+          </h1>
+        </div>
+        {/* Spacer to push dropdown to bottom on mobile */}
+        <div className="hidden md:block flex-1"></div>
+        {/* Product Selection Dropdown - Bottom on Mobile, Left on Desktop */}
+        <div className="w-full md:w-auto flex justify-center md:justify-start">
+          <Select onValueChange={(e) => handleProductChange(e)} value={product}>
+            <SelectTrigger className="w-full md:w-[220px] bg-white text-black">
+              <SelectValue placeholder="Select Product" />
+            </SelectTrigger>
+            <SelectContent className="bg-white text-black">
+              <SelectItem value="volunteer" className="bg-white">
+                <Globe className="mr-2 h-4 w-4" />
+                Global Volunteer
+              </SelectItem>
+              <SelectItem value="talent/teacher" className="bg-white">
+                <GraduationCap className="mr-2 h-4 w-4" />
+                Global Talent/ Teacher
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-
-      {/* Right: Three Dots Menu */}
-      <button className="text-white">
-        <span className="text-xl">⋮</span>
-      </button>
+      {/* Right: Menu Options (Hidden in Mobile) - Removed from main flow, not needed */}
+      {/* <div className="hidden md:flex space-x-4 text-white">
+        </div> */}
     </nav>
   );
 }
