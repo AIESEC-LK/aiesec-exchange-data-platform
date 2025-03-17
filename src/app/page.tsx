@@ -5,7 +5,7 @@ import { EntityChart } from "@/components/EntityChart";
 import LcChart from "@/components/LcChart";
 import { McChart } from "@/components/McChart";
 import RatioTable from "@/components/RatioTable";
-import PieChart from "@/components/PieChart";
+import { RegionalPieChart } from "@/components/RegionalPieChart";
 import EntityStats from "@/components/EntityStats";
 import DashboardFilters from "@/components/DashboardFilters";
 import EntityRanking from "@/components/EntityRanking";
@@ -15,15 +15,13 @@ import DashboardFooter from "@/components/DashboardFooter";
 import { useCallback, useState } from "react";
 
 export default function Home() {
-
-
-
-
-
-
-
-
   const [responce, setResponce] = useState({});
+  const [entityStatsData, setEntityStatsData] = useState({
+    // State for EntityStats data
+    totalEntities: 550,
+    activeEntities: 480,
+    inactiveEntities: 70,
+  });
 
   // Sample data for FunnelChart
   const [product, setProduct] = useState<string>("volunteer");
@@ -133,15 +131,25 @@ export default function Home() {
       </div>
 
       {/* Filters Section */}
-      <DashboardFilters product={product} setResponce={setResponce}  />
+      <DashboardFilters product={product} setResponce={setResponce} />
+
+      {/* Entity Stats Section */}
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+        {" "}
+        {/* Responsive full width */}
+        <div className="bg-white p-4 rounded-lg shadow-md h-full">
+          <EntityStats data={entityStatsData} />{" "}
+          {/* Passing data to EntityStats */}
+        </div>
+      </div>
 
       {/* First Row: Entity Ranking + Pie Chart + Entity Chart*/}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6">
         <div className="flex flex-col p-4 rounded-lg h-full">
           <EntityRanking />
         </div>
         <div className="flex flex-col p-4 rounded-lg h-full">
-          <PieChart />
+          <RegionalPieChart />
         </div>
         <div className="flex flex-col p-4 rounded-lg h-full">
           <EntityChart inputData={entityChartData} />
@@ -149,7 +157,7 @@ export default function Home() {
       </div>
 
       {/* Second Row: Funnel Chart + LcChart */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-4 rounded-lg shadow-md h-full">
           <FunnelChart stages={funnelStages} />
         </div>
@@ -159,7 +167,7 @@ export default function Home() {
       </div>
 
       {/* Third Row: Ratio Table + McChart */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-4 rounded-lg shadow-md h-full">
           <RatioTable data={ratioTableData} />
         </div>
@@ -175,185 +183,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-// 'use client'
-
-// import React, { useState, FormEvent, ChangeEvent } from 'react';
-// import { AlertCircle, ChevronUp, ChevronDown } from "lucide-react";
-
-
-
-// interface ApiResponse {
-//   filteredData: OpportunityData[];
-//   statusCount: Record<string, number>;
-//   totalCount: number;
-//   hostLcs: {
-//     hostLcApplicationCount: Record<string, number>;
-//     hostLcPplCount: Record<string, number>;
-//   };
-//   homeMcApplicationCount: Record<string, number>;
-//   aplToApdConverstion: {
-//     apdCounts: Record<string, number>;
-//     homeMcApplicationCount: Record<string, number>;
-//     aplapd: Record<string, number>;
-//   };
-//   homeLcApplicationCount: Record<string, number>;
-//   dataForFunnel: {
-//     statusCount: Record<string, number>;
-//     rlz_com: Number;
-//     apl_acc: Number;
-//     apd_rlz: Number;
-//     acc_apd: Number;
-
-
-
-
-//   };
-
-//   regionCount: Record<string, number>;
-
-// }
-
-// const DataFilterPage: React.FC = () => {
-//   const [formValues, setFormValues] = useState<FilterParams>({
-//     hostLc: '',
-//     from: '',
-//     to: '',
-//     project: '',
-//     product: '',
-//     homeMc: '',
-//     homeLc: '',
-//     status: ''
-//   });
-
-//   const [data, setData] = useState<ApiResponse | null>(null);
-//   const [loading, setLoading] = useState<boolean>(false);
-//   const [error, setError] = useState<string | null>(null);
-//   const [sortConfig, setSortConfig] = useState<{
-//     key: string;
-//     direction: 'asc' | 'desc';
-//   } | null>(null);
-
-//   const handleSort = (key: string) => {
-//     let direction: 'asc' | 'desc' = 'asc';
-//     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
-//       direction = 'desc';
-//     }
-//     setSortConfig({ key, direction });
-//   };
-
-//   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     setFormValues(prev => ({ ...prev, [name]: value }));
-//   };
-
-  // const handleSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-  //   await fetchData(formValues);
-  // };
-
-  // const handleReset = () => {
-  //   setFormValues({
-  //     hostLc: '',
-  //     from: '',
-  //     to: '',
-  //     project: '',
-  //     product: '',
-  //     homeMc: '',
-  //     homeLc: '',
-  //     status: ''
-  //   });
-  //   setData(null);
-  // };
-
-  // const fetchData = async (params: FilterParams) => {
-  //   setLoading(true);
-  //   setError(null);
-  //   try {
-  //     const response = await fetch('/api', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(params),
-  //     });
-  //     if (!response.ok) throw new Error('Failed to fetch data');
-  //     const responseData: ApiResponse = await response.json();
-  //     console.log(responseData);
-
-  //     setData(responseData);
-  //   } catch (err) {
-  //     setError(err instanceof Error ? err.message : 'An unknown error occurred');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
- 
-
-//   return (
-//     <div className="container mx-auto px-4 py-8">
-
-//       <div className="bg-white rounded-lg shadow-lg mb-8 p-6">
-//         <h2 className="text-xl font-semibold mb-4">Filter Data</h2>
-//         <form onSubmit={handleSubmit} className="space-y-6">
-//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-//             {Object.entries(formValues).map(([key, value]) => (
-//               <div key={key} className="space-y-2">
-//                 <label className="block text-sm font-medium text-gray-700">
-//                   {key.charAt(0).toUpperCase() + key.slice(1)}
-//                 </label>
-//                 <input
-//                   type={key === 'from' || key === 'to' ? 'date' : 'text'}
-//                   name={key}
-//                   value={value}
-//                   onChange={handleInputChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-//                 />
-//               </div>
-//             ))}
-//           </div>
-
-//           <div className="flex justify-end space-x-2">
-//             <button
-//               type="button"
-//               onClick={handleReset}
-//               className="px-4 py-2 border border-gray-300 rounded-md"
-//             >
-//               Reset
-//             </button>
-//             <button
-//               type="submit"
-//               disabled={loading}
-//               className="px-4 py-2 bg-blue-600 text-white rounded-md"
-//             >
-//               {loading ? 'Loading...' : 'Apply Filters'}
-//             </button>
-//           </div>
-//         </form>
-//       </div>
-
-//       {error && (
-//         <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
-//           <div className="flex">
-//             <AlertCircle className="h-5 w-5 text-red-500" />
-//             <div className="ml-3 text-red-700">{error}</div>
-//           </div>
-//         </div>
-//       )}
-
-     
-//     </div>
-//   );
-// };
-
-// export default DataFilterPage;
-
-
-
-
-
-
-
-
-
