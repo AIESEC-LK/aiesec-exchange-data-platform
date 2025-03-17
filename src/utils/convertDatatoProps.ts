@@ -159,3 +159,24 @@ export function convertRankingData(
   }));
   return arr.sort((a, b) => b.apl - a.apl);
 }
+
+export function convertToStatsData(
+  data: Record<string, number> | null
+): { label: string; value: number }[] {
+  if (!data) return [];
+
+  const stages = [
+    "open",
+    "applied",
+    "accepted",
+    "approved",
+    "realized",
+    "finished",
+    "completed",
+  ];
+  const stats = stages.map((stage) => ({
+    label: stage.charAt(0).toUpperCase() + stage.slice(1),
+    value: data[stage] || 0,
+  }));
+  return stats;
+}

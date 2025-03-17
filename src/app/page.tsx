@@ -21,17 +21,12 @@ import {
   convertEntityDataToArray,
   convertToRegionalData,
   convertRankingData,
+  convertToStatsData,
 } from "@/utils/convertDatatoProps";
 
 export default function Home() {
   const [responce, setResponce] = useState<any>({});
   const [functionName, setFunctionName] = useState<string>("iGV");
-  const [entityStatsData, setEntityStatsData] = useState({
-    // State for EntityStats data
-    totalEntities: 550,
-    activeEntities: 480,
-    inactiveEntities: 70,
-  });
 
   // Sample data for FunnelChart
   const [product, setProduct] = useState<string>("volunteer");
@@ -46,6 +41,7 @@ export default function Home() {
   const [ratioTableData, setRatioTableData] = useState<any>([]);
   const [regionalChartData, setRegionalChartData] = useState<any>([]);
   const [rankingData, setRankingData] = useState<any>([]);
+  const [statsData, setStatsData] = useState<any>([]);
   React.useEffect(() => {
     setFunnelStages(
       convertToStageArray(responce?.applicationResponce?.funnelCounts)
@@ -104,7 +100,9 @@ export default function Home() {
       responce?.applicationResponce?.homeLcCount,
       responce?.applicationResponce?.homeLcPplCount
     );
-
+    setStatsData(
+      convertToStatsData(responce?.applicationResponce?.funnelCounts)
+    );
     setRankingData(
       (functionName.startsWith("i")
         ? incomingRankingData
@@ -158,7 +156,7 @@ export default function Home() {
         {" "}
         {/* Responsive full width */}
         <div className="bg-white p-4 rounded-lg shadow-md h-full">
-          <EntityStats data={entityStatsData} />{" "}
+          <EntityStats statData={statsData} />{" "}
           {/* Passing data to EntityStats */}
         </div>
       </div>
