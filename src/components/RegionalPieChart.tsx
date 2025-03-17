@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Pie, PieChart } from "recharts";
+import { Pie, PieChart, Tooltip } from "recharts";
 import {
   Card,
   CardContent,
@@ -15,45 +15,44 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-];
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "#343a40",
-  },
-  safari: {
-    label: "Safari",
-    color: "#007bff",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "#28a745",
-  },
-  edge: {
-    label: "Edge",
-    color: "#dc3545",
-  },
-  other: {
-    label: "Other",
-    color: "#ffc107",
-  },
-} satisfies ChartConfig;
 
-export const RegionalPieChart = () => {
+export const RegionalPieChart = ({
+  chartInput,
+}: {
+  chartInput: { region: string; count: number }[];
+}) => {
+  const chartData = chartInput.map((item) => ({
+    ...item,
+    fill: getColorForRegion(item.region),
+  }));
+
+  const chartConfig = chartData.reduce((config, item) => {
+    config[item.region] = {
+      label: item.region,
+      color: getColorForRegion(item.region),
+    };
+    return config;
+  }, {} as ChartConfig);
+
+  function getColorForRegion(region: string): string {
+    switch (region) {
+      case "Asia_Pacific":
+        return "#343a40";
+      case "Europe":
+        return "#007bff";
+      case "Middle_East_Africa":
+        return "#28a745";
+      case "Americas":
+        return "#dc3545";
+      default:
+        return "#000000";
+    }
+  }
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Legend</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Regional Chart</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -61,9 +60,15 @@ export const RegionalPieChart = () => {
           className="mx-auto aspect-square max-h-[360px]"
         >
           <PieChart>
-            <Pie data={chartData} dataKey="visitors" />
+            <Pie data={chartData} dataKey="count" />
+            <Tooltip
+              formatter={(value, name, props) => [
+                `${value}`,
+                `${props.payload.region}`,
+              ]}
+            />
             <ChartLegend
-              content={<ChartLegendContent nameKey="browser" />}
+              content={<ChartLegendContent nameKey="region" />}
               className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
             />
           </PieChart>

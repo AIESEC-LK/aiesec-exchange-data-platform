@@ -21,6 +21,7 @@ const FunnelChart: React.FC<FunnelChartProps> = ({ stages }) => {
     return stages.map((stage, index) => {
       if (index === 0) return null;
       const previousStageValue = stages[index - 1].value;
+      if (previousStageValue === 0) return "0.00";
       const conversionRate = (stage.value / previousStageValue) * 100;
       return conversionRate.toFixed(2);
     });
