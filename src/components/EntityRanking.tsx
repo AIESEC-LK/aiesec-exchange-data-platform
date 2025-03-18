@@ -3,20 +3,11 @@
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
-const rankingData = [
-  { entity: "Colombo Central", apl: 4321, ppl: 4318 },
-  { entity: "Colombo North", apl: 4033, ppl: 4030 },
-  { entity: "Colombo South", apl: 3122, ppl: 3122 },
-  { entity: "Kandy", apl: 2104, ppl: 2100 },
-  { entity: "NIBM", apl: 2003, ppl: 2000 },
-  { entity: "NSBM", apl: 1894, ppl: 1700 },
-  { entity: "Rajarata", apl: 2500, ppl: 2400 },
-  { entity: "Ruhuna", apl: 2402, ppl: 2402 },
-  { entity: "SLIIT", apl: 1335, ppl: 1328 },
-  { entity: "USJ", apl: 567, ppl: 560 },
-];
-
-export default function EntityRanking() {
+export default function EntityRanking({
+  rankingData,
+}: {
+  rankingData: { entity: string; apl: number; ppl: number }[];
+}) {
   return (
     <Card className="shadow-md rounded-lg bg-white p-4">
       <CardContent>
