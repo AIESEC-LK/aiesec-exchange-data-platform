@@ -29,7 +29,7 @@ export default function DashboardFilters({
     undefined
   );
   const [selectedFunction, setSelectedFunction] = React.useState<string | null>(
-    null
+    "iGV"
   );
   const [filterValues, setFilterValues] = React.useState({
     localLc: "",
@@ -42,6 +42,18 @@ export default function DashboardFilters({
     project: "",
     duration: "",
   });
+  const defaultRequest = {
+    status: "",
+    from: new Date(new Date().getFullYear(), 1, 1).toISOString().split("T")[0], // Start of February this year
+    to: new Date().toISOString().split("T")[0], // Today's date
+    product: "iGV",
+    homeLc: "",
+    homeMc: "",
+    hostLc: "Sri Lanka",
+    hostMc: "",
+    project: "",
+    duration: "",
+  };
   const [request, setRequest] = React.useState({});
 
   const t_products = ["oGTa", "iGTa", "oGTe", "iGTe"];
@@ -190,6 +202,16 @@ export default function DashboardFilters({
       console.log("Data fetch operation completed.");
     }
   };
+
+  React.useEffect(() => {
+    console.log("Default Request:", defaultRequest);
+    console.log("Fetching Data");
+    try {
+      fetchData(defaultRequest);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
