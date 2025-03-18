@@ -10,17 +10,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "./DatePickerWithRange"; // Correct import!
 
 export default function DashboardFilters({
   product,
   setResponce,
+  setFunctioName,
 }: {
   product: string;
   setResponce: (values: any) => void;
+  setFunctioName: (value: string) => void;
 }) {
+  const handleFunctionNameChange = (value: string) => {
+    setFunctioName(value);
+  };
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>(
     undefined
   );
@@ -135,13 +139,13 @@ export default function DashboardFilters({
         homeLc: filterValues.foreignLc,
         homeMc: filterValues.foreignMc,
         hostLc: filterValues.localLc,
-        hostMc: "sri_lanka", // Assuming this is the default value
+        hostMc: "Sri Lanka", // Assuming this is the default value
       };
     } else if (["oGTa", "oGTe", "oGV"].includes(filterValues.product)) {
       formattedRequest = {
         ...formattedRequest,
         homeLc: filterValues.localLc,
-        homeMc: "sri_lanka", // Assuming this is the default value
+        homeMc: "Sri Lanka", // Assuming this is the default value
         hostLc: filterValues.foreignLc,
         hostMc: filterValues.foreignMc,
       };
@@ -228,7 +232,12 @@ export default function DashboardFilters({
 
       {/* Functions Selection */}
       <div className="w-full sm:w-auto">
-        <Select onValueChange={handleFunctionSelect}>
+        <Select
+          onValueChange={(e) => {
+            handleFunctionSelect(e);
+            handleFunctionNameChange(e);
+          }}
+        >
           <SelectTrigger className="w-full sm:w-32">
             <SelectValue placeholder="Functions" />
           </SelectTrigger>
@@ -252,18 +261,16 @@ export default function DashboardFilters({
 
       {/* Status Selection */}
       <div className="w-full sm:w-auto">
-        <Select
-          className="w-full sm:w-32"
-          onValueChange={(value) => handleSelectChange("status", value)}
-        >
+        <Select onValueChange={(value) => handleSelectChange("status", value)}>
           <SelectTrigger className="w-full sm:w-32">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="applied">Applied</SelectItem>
+            <SelectItem value="accepted">Accepted</SelectItem>
             <SelectItem value="approved">Approved</SelectItem>
+            <SelectItem value="realized">Realized</SelectItem>
+            <SelectItem value="completed">Completed</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -274,7 +281,6 @@ export default function DashboardFilters({
           {" "}
           {/* Added wrapper div for width control */}
           <Select
-            className="w-full sm:w-32"
             onValueChange={(value) => handleSelectChange("project", value)}
           >
             <SelectTrigger className="w-full sm:w-32">
