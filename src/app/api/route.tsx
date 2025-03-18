@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { fetchCSVData, filterData } from "./processData";
+import { applicationCounts, fetchCSVData, filterData } from "./processData";
 import { processApplications } from "./handleApplications";
 import { processAccepted } from "./handleAccepted";
 import { processApproved } from "./handleApproved";
@@ -68,6 +68,12 @@ export async function POST(request: NextRequest) {
 
 
 
+
+        // console.log(body);
+        
+
+
+
         let data: OpportunityData[] = await fetchCSVData(body.product);
 
         let filteredData = filterData(data, body);
@@ -89,11 +95,14 @@ export async function POST(request: NextRequest) {
             responce = processRealizations(filteredData, body);
         }
 
+        const appCounts = applicationCounts(filteredData, body);
+
 
 
         let finalResponce = {
             responce,
-            applicationResponce
+            applicationResponce,
+            appCounts
         }
 
 

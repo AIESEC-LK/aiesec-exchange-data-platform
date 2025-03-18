@@ -3,21 +3,21 @@
 import * as React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const stats = [
-  { label: "Opens", value: "18,420", percentage: "+11% of Growth" },
-  { label: "Applications", value: "11,147", percentage: "+23.4% of Growth" },
-  { label: "Acceptance", value: "2,253", percentage: "+34.5% of Growth" },
-  { label: "Approvals", value: "1,123", percentage: "+43.2% of Growth" },
-  { label: "Realizations", value: "854", percentage: "-12% of Growth" },
-  { label: "Finished", value: "457", percentage: "-13.2% of Growth" },
-  { label: "Completions", value: "312", percentage: "+4.4% of Growth" },
-];
-
-export default function EntityStats() {
-  const [selectedIndex, setSelectedIndex] = React.useState(null);
-
+export default function EntityStats({
+  statData,
+}: {
+  statData: { label: string; value: number }[];
+}) {
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+  const stats = statData.map((stat) => ({
+    label: stat.label,
+    value: stat.value,
+    percentage: "0% of growth",
+  }));
+  if (!stats || !stats.length || stats.length === 0)
+    return <div className="text-center text-gray-500">No data available.</div>;
   return (
-    <div className="grid grid-cols-7 gap-4">
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
       {stats.map((stat, index) => (
         <Card
           key={index}

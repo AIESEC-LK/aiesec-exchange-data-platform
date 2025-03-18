@@ -112,15 +112,15 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
 
 export function processApplications(data: OpportunityData[], body: FilterRequestBody) {
 
-    console.log(data);
+    // console.log(data);
     
 
     const applications = filterApplications(data, body);
     let filterdDataBasedOnSelections = filterDataBasedOnSelections(applications, body);
 
 
-    console.log(applications);
-    console.log("applications displayed");
+    // console.log(applications);
+    // console.log("applications displayed");
     
     
 
@@ -158,7 +158,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
         "France", "Georgia", "Germany", "Greece", "Hungary", "Iceland", "Italy",
         "Kazakhstan", "Kyrgyzstan", "Latvia", "Lithuania", "Macedonia", "Moldova",
         "Montenegro", "Norway", "Poland", "Portugal", "Romania", "Russia", "Serbia",
-        "Slovakia", "Spain", "Sweden", "Switzerland", "The Netherlands", "Türkiye",
+        "Slovakia", "Spain", "Sweden", "Switzerland", "The Netherlands", "Turkey",
         "Ukraine", "United Kingdom"
     ];
 
@@ -247,7 +247,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
 
     });
 
-    applications.map((application) => {
+    filterdDataBasedOnSelections.map((application) => {
 
 
         

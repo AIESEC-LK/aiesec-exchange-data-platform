@@ -239,7 +239,14 @@ export function processAccepted(data: OpportunityData[], body: FilterRequestBody
 
     });
 
-    applications.map((application) => {
+    filterdDataBasedOnSelections.map((application) => {
+
+
+
+        
+
+
+
 
         
        
