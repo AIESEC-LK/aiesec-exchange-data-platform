@@ -44,7 +44,7 @@ export default function Home() {
   const [statsData, setStatsData] = useState<any>([]);
   React.useEffect(() => {
     setFunnelStages(
-      convertToStageArray(responce?.applicationResponce?.funnelCounts)
+      convertToStageArray(responce?.responce?.funnelCounts)
     );
     console.log("Funnel Stages", funnelStages);
     const inComingRatioTableData = converToRatioTableData(
@@ -101,7 +101,7 @@ export default function Home() {
       responce?.applicationResponce?.homeLcPplCount
     );
     setStatsData(
-      convertToStatsData(responce?.applicationResponce?.funnelCounts)
+      convertToStatsData(responce?.appCounts)
     );
     setRankingData(
       (functionName.startsWith("i")
