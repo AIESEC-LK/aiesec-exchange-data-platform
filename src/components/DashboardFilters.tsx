@@ -244,17 +244,17 @@ export default function DashboardFilters({
           <SelectContent>
             {product === "volunteer"
               ? v_products.map((p) => (
-                  <SelectItem key={p} value={p}>
-                    {p}
-                  </SelectItem>
-                ))
+                <SelectItem key={p} value={p}>
+                  {p}
+                </SelectItem>
+              ))
               : product === "talent/teacher"
-              ? t_products.map((p) => (
+                ? t_products.map((p) => (
                   <SelectItem key={p} value={p}>
                     {p}
                   </SelectItem>
                 ))
-              : null}
+                : null}
           </SelectContent>
         </Select>
       </div>
@@ -289,17 +289,17 @@ export default function DashboardFilters({
             <SelectContent>
               {product === "volunteer"
                 ? gv_projects.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      {p}
-                    </SelectItem>
-                  ))
+                  <SelectItem key={p} value={p}>
+                    {p}
+                  </SelectItem>
+                ))
                 : product === "talent/teacher"
-                ? t_projects.map((p) => (
+                  ? t_projects.map((p) => (
                     <SelectItem key={p} value={p}>
                       {p}
                     </SelectItem>
                   ))
-                : null}
+                  : null}
             </SelectContent>
           </Select>
         </div>
@@ -316,8 +316,11 @@ export default function DashboardFilters({
             <SelectValue placeholder={mcLabel} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="mc1">MC 1</SelectItem>
-            <SelectItem value="mc2">MC 2</SelectItem>
+            <SelectItem value="Pakistan">Pakistan</SelectItem>
+            <SelectItem value="Germany">Germany</SelectItem>
+            <SelectItem value="India">India</SelectItem>
+            <SelectItem value="Turkey">Turkey</SelectItem>
+
           </SelectContent>
         </Select>
       </div>
@@ -333,8 +336,9 @@ export default function DashboardFilters({
             <SelectValue placeholder={lcLabel} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="lc1">LC 1</SelectItem>
-            <SelectItem value="lc2">LC 2</SelectItem>
+            <SelectItem value="ESKISEHIR">ESKISEHIR</SelectItem>
+            <SelectItem value="ISTANBUL ASIA">ISTANBUL ASIA
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>

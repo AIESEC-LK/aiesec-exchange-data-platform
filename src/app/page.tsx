@@ -101,7 +101,7 @@ export default function Home() {
       responce?.applicationResponce?.homeLcPplCount
     );
     setStatsData(
-      convertToStatsData(responce?.applicationResponce?.funnelCounts)
+      convertToStatsData(responce?.appCounts)
     );
     setRankingData(
       (functionName.startsWith("i")
