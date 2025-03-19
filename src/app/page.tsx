@@ -44,7 +44,7 @@ export default function Home() {
   const [statsData, setStatsData] = useState<any>([]);
   React.useEffect(() => {
     setFunnelStages(
-      convertToStageArray(responce?.responce?.funnelCounts)
+      convertToStageArray(responce?.applicationResponce?.funnelCounts)
     );
     console.log("Funnel Stages", funnelStages);
     const inComingRatioTableData = converToRatioTableData(
