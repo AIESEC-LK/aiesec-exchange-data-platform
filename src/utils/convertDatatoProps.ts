@@ -32,7 +32,7 @@ type RatioTableEntry = {
   mc: string;
   aplCount: number;
   aplApd: number;
-  processTime: number;
+  processTime: number | string;
 };
 
 export const converToRatioTableData = (
@@ -56,8 +56,8 @@ export const converToRatioTableData = (
     return {
       mc: mc,
       aplCount: aplCount,
-      aplApd: parseFloat(aplApd.toFixed(2)),
-      processTime: processTime,
+      aplApd: parseFloat(aplApd.toFixed(2)), // Ensure 2 decimal places
+      processTime: processTime === 0 ? "-" : parseFloat(processTime.toFixed(2)), // Ensure 2 decimal places
     };
   });
 
