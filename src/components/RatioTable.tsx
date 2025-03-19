@@ -25,7 +25,7 @@ const RatioTable = ({
             <TableHead className="w-[100px]">MC</TableHead>
             <TableHead>APL Count</TableHead>
             <TableHead>APL-APD</TableHead>
-            <TableHead>Process Time</TableHead>
+            <TableHead>Process Time (Days)</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="">
