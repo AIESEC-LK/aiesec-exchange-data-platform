@@ -70,7 +70,13 @@ function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
 }
 
 
-function filterDataBasedOnSelections(data: OpportunityData[], body: FilterRequestBody) {
+export function filterDataBasedOnSelections(data: OpportunityData[], body: FilterRequestBody) {
+
+
+
+
+    // console.log("inside filtered data based on selections", body);
+    
 
 
 
@@ -104,12 +110,16 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
         // If all applicable conditions pass, include the item
         return true;
     });
+
+
+    // console.log("filtered data based on selections", filteredDataBasedOnSelections);
+    
  return filteredDataBasedOnSelections;
 }
 
 export function processApproved(data: OpportunityData[], body: FilterRequestBody) {
 
-    console.log(data);
+    // console.log(data);
     
 
     const applications = filterApplications(data, body);
@@ -118,8 +128,8 @@ export function processApproved(data: OpportunityData[], body: FilterRequestBody
 
 
 
-    console.log(applications);
-    console.log("applications displayed");
+    // console.log(applications);
+    // console.log("applications displayed");
     
     
 
@@ -151,7 +161,7 @@ export function processApproved(data: OpportunityData[], body: FilterRequestBody
         "France", "Georgia", "Germany", "Greece", "Hungary", "Iceland", "Italy",
         "Kazakhstan", "Kyrgyzstan", "Latvia", "Lithuania", "Macedonia", "Moldova",
         "Montenegro", "Norway", "Poland", "Portugal", "Romania", "Russia", "Serbia",
-        "Slovakia", "Spain", "Sweden", "Switzerland", "The Netherlands", "Türkiye",
+        "Slovakia", "Spain", "Sweden", "Switzerland", "The Netherlands", "Turkey",
         "Ukraine", "United Kingdom"
     ];
 
@@ -241,7 +251,7 @@ export function processApproved(data: OpportunityData[], body: FilterRequestBody
     });
 
 
-    applications.map((application) => {
+    filterdDataBasedOnSelections.map((application) => {
 
 
         
