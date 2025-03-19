@@ -57,7 +57,10 @@ export async function fetchCSVData(sheet: string | undefined) {
 
     if (sheet == 'iGV') {
 
-        csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRdXVEsx_IdMU00CqSTCKBtjcVkffp6QkWtu3lpA6Tma1Ve8n30wMSKTTerqYpUjAiAJM2hvu1V6lcX/pub?output=csv";
+       
+        
+
+        csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLNMGqVkGNK78XNl83aJ46V9h_vfLB-QC1dajWpeZn4yEtUO55mVjipcAUQnpAtm1oBJM7af0J9aCD/pub?output=csv";
 
 
 
@@ -76,6 +79,8 @@ export async function fetchCSVData(sheet: string | undefined) {
     }
 
     const response = await fetch(csvUrl);
+    
+    
 
     if (!response.ok) {
         throw new Error('Failed to fetch data from Google Sheets');
@@ -87,6 +92,12 @@ export async function fetchCSVData(sheet: string | undefined) {
 
     // Parse CSV data using PapaParse
     const parsedData = Papa.parse<OpportunityData>(csvText, { header: true, skipEmptyLines: true });
+
+
+    // console.log(parsedData.data);
+    // console.log("===============================================");
+    
+    
     
     if (parsedData.errors.length > 0) {
         throw new Error('Failed to parse CSV data');

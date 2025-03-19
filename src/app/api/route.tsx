@@ -79,10 +79,20 @@ export async function POST(request: NextRequest) {
         let filteredData = filterData(data, body);
 
 
+        console.log(filteredData);  
+        console.log("filteredData");
+        
+        
+
+
 
         let responce = null;
 
         let applicationResponce = processApplications(filteredData, body);
+
+        console.log(applicationResponce);
+        console.log("applicationResponce");
+        
 
         if (body.status == "applied") {
             responce = processApplications(filteredData, body);
