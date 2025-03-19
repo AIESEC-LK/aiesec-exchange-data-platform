@@ -37,7 +37,8 @@ type RatioTableEntry = {
 
 export const converToRatioTableData = (
   mcApprovedCount: McData | null,
-  mcCount: McData | null
+  mcCount: McData | null,
+  ProcessTimeData: McData | null
 ): RatioTableEntry[] => {
   if (!mcApprovedCount || !mcCount) return [];
 
@@ -50,12 +51,13 @@ export const converToRatioTableData = (
     const aplCount = mcCount[mc] || 0;
     const approvedCount = mcApprovedCount[mc] || 0;
     const aplApd = aplCount > 0 ? (approvedCount / aplCount) * 100 : 0;
+    const processTime = ProcessTimeData![mc] || 0;
 
     return {
       mc: mc,
       aplCount: aplCount,
       aplApd: parseFloat(aplApd.toFixed(2)),
-      processTime: 0, // Default to 0
+      processTime: processTime,
     };
   });
 
