@@ -109,7 +109,7 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
 
 export function processRealizations(data: OpportunityData[], body: FilterRequestBody) {
 
-    console.log(data);
+    // console.log(data);
     
 
     const applications = filterApplications(data, body);
@@ -118,8 +118,8 @@ export function processRealizations(data: OpportunityData[], body: FilterRequest
 
 
 
-    console.log(applications);
-    console.log("applications displayed");
+    // console.log(applications);
+    // console.log("applications displayed");
     
     
 

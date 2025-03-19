@@ -75,7 +75,7 @@ export function filterDataBasedOnSelections(data: OpportunityData[], body: Filte
 
 
 
-    console.log("inside filtered data based on selections", body);
+    // console.log("inside filtered data based on selections", body);
     
 
 
@@ -112,7 +112,7 @@ export function filterDataBasedOnSelections(data: OpportunityData[], body: Filte
     });
 
 
-    console.log("filtered data based on selections", filteredDataBasedOnSelections);
+    // console.log("filtered data based on selections", filteredDataBasedOnSelections);
     
  return filteredDataBasedOnSelections;
 }
