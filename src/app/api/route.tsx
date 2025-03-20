@@ -21,13 +21,14 @@ interface OpportunityData {
     "Host MC": string;
     "Product": string;
     "Status": string;
-    "Applied At": string;
+    "Applied_Date": string;
     "Backgrounds": string;
     "Date EP Accept Offer": string;
-    "Date Marked Approved": string;
-    "Date Marked Accepted By Host": string;
-    "Date Marked Realized": string;
+    "Date_Approved": string;
+    "Matched_Date": string;
+    "Date_Realized": string;
     "Duration Type": string;
+    "Experience_End_Date": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
@@ -79,8 +80,7 @@ export async function POST(request: NextRequest) {
         let filteredData = filterData(data, body);
 
 
-        console.log(filteredData);  
-        console.log("filteredData");
+  
         
         
 

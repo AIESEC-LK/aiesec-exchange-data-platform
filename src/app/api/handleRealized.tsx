@@ -12,12 +12,12 @@ interface OpportunityData {
     "Host MC": string;
     "Product": string;
     "Status": string;
-    "Applied At": string;
+    "Applied_Date": string;
     "Backgrounds": string;
     "Date EP Accept Offer": string;
-    "Date Marked Approved": string;
-    "Date Marked Accepted By Host": string;
-    "Date Marked Realized": string;
+    "Date_Approved": string;
+    "Matched_Date": string;
+    "Date_Realized": string;
     "Duration Type": string;
     "Organization": string;
     "SDG": string;
@@ -26,6 +26,7 @@ interface OpportunityData {
     "Languages": string;
     "Nationality": string;
     "Sub Product": string;
+    "Experience_End_Date": string;
 }
 
 // Define the request body interface
@@ -52,7 +53,7 @@ interface FilterRequestBody {
 function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
     const applications = data.filter((application) => {
         if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-            const appliedDate = new Date(application["Date Marked Realized"]);
+            const appliedDate = new Date(application["Date_Realized"]);
             const fromDate = new Date(body.from);
             const toDate = new Date(body.to);
 
@@ -182,7 +183,8 @@ export function processRealizations(data: OpportunityData[], body: FilterRequest
         "applied":filterdDataBasedOnSelections.length,
         "approved":0,
         "accepted":0,
-        "realized":0
+        "realized":0,
+        "finished":0
     }
 
 
@@ -194,17 +196,21 @@ export function processRealizations(data: OpportunityData[], body: FilterRequest
 
     filterdDataBasedOnSelections.map((application) => {
 
-        if (application["Date Marked Approved"] !=  "") {
+        if (application["Date_Approved"] !=  "") {
 
             funnelCounts["approved"] += 1;
         }
 
-        if(application["Date Marked Accepted By Host"] != "") {
+        if(application["Matched_Date"] != "") {
             funnelCounts["accepted"] += 1;
         }
 
-        if(application["Date Marked Realized"] != "") {
+        if(application["Date_Realized"] != "") {
             funnelCounts["realized"] += 1;
+        }
+
+        if(application["Experience_End_Date"] != "") {
+            funnelCounts["finished"] += 1;
         }
 
 

@@ -15,12 +15,12 @@ interface OpportunityData {
     "Host MC": string;
     "Product": string;
     "Status": string;
-    "Applied At": string;
+    "Applied_Date": string;
     "Backgrounds": string;
     "Date EP Accept Offer": string;
-    "Date Marked Approved": string;
-    "Date Marked Accepted By Host": string;
-    "Date Marked Realized": string;
+    "Date_Approved": string;
+    "Matched_Date": string;
+    "Date_Realized": string;
     "Duration Type": string;
     "Organization": string;
     "SDG": string;
@@ -29,6 +29,7 @@ interface OpportunityData {
     "Languages": string;
     "Nationality": string;
     "Sub Product": string;
+    "Experience_End_Date": string;
 }
 
 
@@ -65,7 +66,9 @@ export async function fetchCSVData(sheet: string | undefined) {
 
 
     } else if (sheet == 'oGV') {
-        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSW84PHE6hSu_ctfzPMrh0EHcFFRCl0ojVc3RHy1ouPBXIoKTtSSA9GPju3pZxZQZdaBUIQ9Y97Nn-8/pub?output=csv';
+
+
+        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRXoLTqLJ_rd3O1rSsPU2H5YzSFD6f_qhqVNy01yaNj6RV9gbvypUzwKy-z7Eg6Hb_Tmc661r1hI_r8/pub?gid=952125777&single=true&output=csv';
 
     }
     else if (sheet == 'iGT') {
@@ -94,8 +97,7 @@ export async function fetchCSVData(sheet: string | undefined) {
     const parsedData = Papa.parse<OpportunityData>(csvText, { header: true, skipEmptyLines: true });
 
 
-    // console.log(parsedData.data);
-    // console.log("===============================================");
+
     
     
     
@@ -162,7 +164,7 @@ const filterdData = filterDataBasedOnSelections(data, body);
    
         const applications = filterdData.filter((application) => {
             if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-                const appliedDate = new Date(application["Applied At"]);
+                const appliedDate = new Date(application["Applied_Date"]);
                 const fromDate = new Date(body.from);
                 const toDate = new Date(body.to);
     
@@ -185,7 +187,7 @@ const filterdData = filterDataBasedOnSelections(data, body);
 
         const approvals = filterdData.filter((application) => {
             if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-                const appliedDate = new Date(application["Date Marked Approved"]);
+                const appliedDate = new Date(application["Date_Approved"]);
                 const fromDate = new Date(body.from);
                 const toDate = new Date(body.to);
     
@@ -207,7 +209,7 @@ const filterdData = filterDataBasedOnSelections(data, body);
 
         const accepted = filterdData.filter((application) => {
             if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-                const appliedDate = new Date(application["Date Marked Accepted By Host"]);
+                const appliedDate = new Date(application["Matched_Date"]);
                 const fromDate = new Date(body.from);
                 const toDate = new Date(body.to);
     
@@ -224,7 +226,23 @@ const filterdData = filterDataBasedOnSelections(data, body);
 
         const realizations = filterdData.filter((application) => {
             if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-                const appliedDate = new Date(application["Date Marked Realized"]);
+                const appliedDate = new Date(application["Date_Realized"]);
+                const fromDate = new Date(body.from);
+                const toDate = new Date(body.to);
+    
+                // Add one day to toDate to include the end date in the range
+                toDate.setDate(toDate.getDate() + 1);
+    
+                return appliedDate >= fromDate && appliedDate <= toDate;
+            }
+            
+            // Return all applications if no date filter is applied
+            return true;
+        });
+
+        const finished = filterdData.filter((application) => {
+            if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
+                const appliedDate = new Date(application["Experience_End_Date"]);
                 const fromDate = new Date(body.from);
                 const toDate = new Date(body.to);
     
@@ -239,11 +257,34 @@ const filterdData = filterDataBasedOnSelections(data, body);
         });
 
 
+
+
+        const completed = filterdData.filter((application) => {
+            if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
+                const appliedDate = new Date(application["Experience_End_Date"]);
+                const fromDate = new Date(body.from);
+                const toDate = new Date(body.to);
+    
+                // Add one day to toDate to include the end date in the range
+                toDate.setDate(toDate.getDate() + 1);
+    
+                return appliedDate >= fromDate && appliedDate <= toDate && application["Status"] === "completed";
+            }
+            
+            // Return all applications if no date filter is applied
+            return true;
+        });
+
+
+
+
         const stats = {
             applied: applications.length,
             approved: approvals.length,
             accepted: accepted.length,
-            realized: realizations.length
+            realized: realizations.length,
+            finished: finished.length,
+            completed: completed.length
         }
         return stats;
     

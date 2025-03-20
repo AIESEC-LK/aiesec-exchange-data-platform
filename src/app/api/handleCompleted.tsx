@@ -53,7 +53,7 @@ interface FilterRequestBody {
 function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
     const applications = data.filter((application) => {
         if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-            const appliedDate = new Date(application["Matched_Date"]);
+            const appliedDate = new Date(application["Experience_End_Date"]);
             const fromDate = new Date(body.from);
             const toDate = new Date(body.to);
 
@@ -108,7 +108,7 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
  return filteredDataBasedOnSelections;
 }
 
-export function processAccepted(data: OpportunityData[], body: FilterRequestBody) {
+export function processRealizations(data: OpportunityData[], body: FilterRequestBody) {
 
     // console.log(data);
     
@@ -178,12 +178,13 @@ export function processAccepted(data: OpportunityData[], body: FilterRequestBody
         "Europe": 0,
         "Middle East Africa": 0
     };
+
     const funnelCounts = {
         "applied":filterdDataBasedOnSelections.length,
         "approved":0,
         "accepted":0,
         "realized":0,
-        "finished":0
+        "finished":0,
     }
 
 
@@ -208,9 +209,11 @@ export function processAccepted(data: OpportunityData[], body: FilterRequestBody
             funnelCounts["realized"] += 1;
         }
 
+        
         if(application["Experience_End_Date"] != "") {
             funnelCounts["finished"] += 1;
         }
+
 
 
         const homeMc = application["Home MC"];
@@ -245,17 +248,13 @@ export function processAccepted(data: OpportunityData[], body: FilterRequestBody
 
     });
 
+
     filterdDataBasedOnSelections.map((application) => {
-
-
-
-        
-
-
 
 
         
        
+
 
         const homeLc = application["Home LC"];
         if (homeLcCount[homeLc]) {
@@ -309,6 +308,9 @@ export function processAccepted(data: OpportunityData[], body: FilterRequestBody
             hostMcCount[hostMc] = 1;
         }
 
+    
+
+        
 
 
 
