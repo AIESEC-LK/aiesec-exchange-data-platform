@@ -27,7 +27,7 @@ interface OpportunityData {
     "Date_Approved": string;
     "Matched_Date": string;
     "Date_Realized": string;
-    "Duration Type": string;
+    "Duration_Type": string;
     "Experience_End_Date": string;
     "Organization": string;
     "SDG": string;
@@ -35,7 +35,7 @@ interface OpportunityData {
     "Skills": string;
     "Languages": string;
     "Nationality": string;
-    "Sub Product": string;
+    "Sub_Product": string;
 }
 
 // Define the request body interface

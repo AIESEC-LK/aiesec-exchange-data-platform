@@ -21,14 +21,15 @@ interface OpportunityData {
     "Date_Approved": string;
     "Matched_Date": string;
     "Date_Realized": string;
-    "Duration Type": string;
+    "Duration_Type": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
     "Skills": string;
     "Languages": string;
     "Nationality": string;
-    "Sub Product": string;
+    "Sub_Product": string;
+   
     "Experience_End_Date": string;
 }
 
@@ -71,13 +72,19 @@ export async function fetchCSVData(sheet: string | undefined) {
         csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRXoLTqLJ_rd3O1rSsPU2H5YzSFD6f_qhqVNy01yaNj6RV9gbvypUzwKy-z7Eg6Hb_Tmc661r1hI_r8/pub?gid=952125777&single=true&output=csv';
 
     }
-    else if (sheet == 'iGT') {
-        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRBYXfk9XHxmoigGNAoM_VchnURXqdwfrbfm9MNj8dWdoru15zgYDqX1skMKKM8SyF5XQCeovcN7bXB/pub?output=csv';
+    else if (sheet == 'iGTa') {
+        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxag5Kh-Dtf9pKmxongVoL-LW9QheBFkGEGPc1hJd1LFVfsYLmaBY8uj-9xEZBqoVEiCtnlqImDmep/pub?gid=930801631&single=true&output=csv';
 
 
 
-    } else if (sheet == 'oGT') {
-        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQNlq9LxNnrRQHdiVAZGhAA7CAkz986gl4yLGQe5gbuaFNjYMP2kvNfq9tuYeAHMCLMmWGXrwBRpZrw/pub?output=csv';
+    } else if (sheet == 'iGTe') {
+        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxag5Kh-Dtf9pKmxongVoL-LW9QheBFkGEGPc1hJd1LFVfsYLmaBY8uj-9xEZBqoVEiCtnlqImDmep/pub?gid=66998505&single=true&output=csv';
+
+    } else if (sheet == 'oGTa') {
+        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPNq5H4rRYSL-T9M55nSFuKNGn0RnkRtpJ55h-ntlPz0iqtCKjteJDM8EASce1oryb7KORi2e6lvL7/pub?gid=579185653&single=true&output=csv';
+
+    } else if (sheet == 'oGTe') {
+        csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPNq5H4rRYSL-T9M55nSFuKNGn0RnkRtpJ55h-ntlPz0iqtCKjteJDM8EASce1oryb7KORi2e6lvL7/pub?gid=309985975&single=true&output=csv';
 
     }
 
@@ -135,10 +142,10 @@ export function filterData(data: OpportunityData[], body: FilterRequestBody) {
             return false;
         }
 
-        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub Product"] !== body.project) {
+        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub_Product"] !== body.subProduct) {
             return false;
         }
-        if (body.duration && body.duration.trim() !== "" && item["Duration Type"] !== body.project) {
+        if (body.duration && body.duration.trim() !== "" && item["Duration_Type"] !== body.duration) {
             return false;
         }
 

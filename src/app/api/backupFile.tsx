@@ -27,14 +27,14 @@
 //     "Date_Approved": string;
 //     "Matched_Date": string;
 //     "Date_Realized": string;
-//     "Duration Type": string;
+//     "Duration_Type": string;
 //     "Organization": string;
 //     "SDG": string;
 //     "SDG Target": string;
 //     "Skills": string;
 //     "Languages": string;
 //     "Nationality": string;
-//     "Sub Product": string;
+//     "Sub_Product": string;
 //     "Experience_End_Date": string;
 // }
 

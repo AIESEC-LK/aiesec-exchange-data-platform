@@ -172,7 +172,7 @@ export default function DashboardFilters({
     } else if (product === "talent/teacher") {
       formattedRequest = {
         ...formattedRequest,
-        subProject: filterValues.project,
+        subProduct: filterValues.project,
         duration: filterValues.duration,
       };
     }

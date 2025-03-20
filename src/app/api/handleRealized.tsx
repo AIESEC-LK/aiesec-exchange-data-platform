@@ -18,14 +18,14 @@ interface OpportunityData {
     "Date_Approved": string;
     "Matched_Date": string;
     "Date_Realized": string;
-    "Duration Type": string;
+    "Duration_Type": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
     "Skills": string;
     "Languages": string;
     "Nationality": string;
-    "Sub Product": string;
+    "Sub_Product": string;
     "Experience_End_Date": string;
 }
 
@@ -80,10 +80,10 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
         if (body.project && body.project.trim() !== "" && item["Title"] !== body.project) {
             return false;
         }
-        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub Product"] !== body.subProduct) {
+        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub_Product"] !== body.subProduct) {
             return false;
         }
-        if (body.duration && body.duration.trim() !== "" && item["Duration Type"] !== body.duration) {
+        if (body.duration && body.duration.trim() !== "" && item["Duration_Type"] !== body.duration) {
             return false;
         }
         // Only filter by homeMc if it's provided in the request
