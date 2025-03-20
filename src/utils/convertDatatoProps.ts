@@ -32,12 +32,13 @@ type RatioTableEntry = {
   mc: string;
   aplCount: number;
   aplApd: number;
-  processTime: number;
+  processTime: number | string;
 };
 
 export const converToRatioTableData = (
   mcApprovedCount: McData | null,
-  mcCount: McData | null
+  mcCount: McData | null,
+  ProcessTimeData: McData | null
 ): RatioTableEntry[] => {
   if (!mcApprovedCount || !mcCount) return [];
 
@@ -50,12 +51,13 @@ export const converToRatioTableData = (
     const aplCount = mcCount[mc] || 0;
     const approvedCount = mcApprovedCount[mc] || 0;
     const aplApd = aplCount > 0 ? (approvedCount / aplCount) * 100 : 0;
+    const processTime = ProcessTimeData![mc] || 0;
 
     return {
       mc: mc,
       aplCount: aplCount,
-      aplApd: parseFloat(aplApd.toFixed(2)),
-      processTime: 0, // Default to 0
+      aplApd: parseFloat(aplApd.toFixed(2)), // Ensure 2 decimal places
+      processTime: processTime === 0 ? "-" : parseFloat(processTime.toFixed(2)), // Ensure 2 decimal places
     };
   });
 
