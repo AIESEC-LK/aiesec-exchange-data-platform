@@ -18,7 +18,7 @@ interface OpportunityData {
     "Date_Approved": string;
     "Matched_Date": string;
     "Date_Realized": string;
-    "Duration_Type": string;
+    "Duration Type": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
@@ -53,7 +53,7 @@ interface FilterRequestBody {
 function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
     const applications = data.filter((application) => {
         if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-            const appliedDate = new Date(application["Date_Realized"]);
+            const appliedDate = new Date(application["Experience_End_Date"]);
             const fromDate = new Date(body.from);
             const toDate = new Date(body.to);
 
@@ -83,7 +83,7 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
         if (body.subProduct && body.subProduct.trim() !== "" && item["Sub_Product"] !== body.subProduct) {
             return false;
         }
-        if (body.duration && body.duration.trim() !== "" && item["Duration_Type"] !== body.duration) {
+        if (body.duration && body.duration.trim() !== "" && item["Duration Type"] !== body.duration) {
             return false;
         }
         // Only filter by homeMc if it's provided in the request
@@ -184,7 +184,7 @@ export function processRealizations(data: OpportunityData[], body: FilterRequest
         "approved":0,
         "accepted":0,
         "realized":0,
-        "finished":0
+        "finished":0,
     }
 
 
@@ -209,9 +209,11 @@ export function processRealizations(data: OpportunityData[], body: FilterRequest
             funnelCounts["realized"] += 1;
         }
 
+        
         if(application["Experience_End_Date"] != "") {
             funnelCounts["finished"] += 1;
         }
+
 
 
         const homeMc = application["Home MC"];

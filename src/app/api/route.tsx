@@ -21,20 +21,21 @@ interface OpportunityData {
     "Host MC": string;
     "Product": string;
     "Status": string;
-    "Applied At": string;
+    "Applied_Date": string;
     "Backgrounds": string;
     "Date EP Accept Offer": string;
-    "Date Marked Approved": string;
-    "Date Marked Accepted By Host": string;
-    "Date Marked Realized": string;
-    "Duration Type": string;
+    "Date_Approved": string;
+    "Matched_Date": string;
+    "Date_Realized": string;
+    "Duration_Type": string;
+    "Experience_End_Date": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
     "Skills": string;
     "Languages": string;
     "Nationality": string;
-    "Sub Product": string;
+    "Sub_Product": string;
 }
 
 // Define the request body interface
@@ -79,10 +80,19 @@ export async function POST(request: NextRequest) {
         let filteredData = filterData(data, body);
 
 
+  
+        
+        
+
+
 
         let responce = null;
 
         let applicationResponce = processApplications(filteredData, body);
+
+        console.log(applicationResponce);
+        console.log("applicationResponce");
+        
 
         if (body.status == "applied") {
             responce = processApplications(filteredData, body);

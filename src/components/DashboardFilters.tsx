@@ -43,13 +43,13 @@ export default function DashboardFilters({
     duration: "",
   });
   const defaultRequest = {
-    status: "",
+    status: "applied",
     from: new Date(new Date().getFullYear(), 1, 1).toISOString().split("T")[0], // Start of February this year
     to: new Date().toISOString().split("T")[0], // Today's date
     product: "iGV",
     homeLc: "",
     homeMc: "",
-    hostLc: "Sri Lanka",
+    hostLc: "",
     hostMc: "",
     project: "",
     duration: "",
@@ -172,7 +172,7 @@ export default function DashboardFilters({
     } else if (product === "talent/teacher") {
       formattedRequest = {
         ...formattedRequest,
-        subProject: filterValues.project,
+        subProduct: filterValues.project,
         duration: filterValues.duration,
       };
     }
@@ -231,15 +231,15 @@ export default function DashboardFilters({
             <SelectValue placeholder="Local Entity" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="cc">CC</SelectItem>
-            <SelectItem value="cn">CN</SelectItem>
-            <SelectItem value="cs">CS</SelectItem>
-            <SelectItem value="kandy">Kandy</SelectItem>
-            <SelectItem value="nibm">NIBM</SelectItem>
-            <SelectItem value="nsbm">NSBM</SelectItem>
-            <SelectItem value="rajarata">Rajarata</SelectItem>
-            <SelectItem value="ruhuna">Ruhuna</SelectItem>
-            <SelectItem value="sliit">SLIIT</SelectItem>
+            <SelectItem value="CC">CC</SelectItem>
+            <SelectItem value="CN">CN</SelectItem>
+            <SelectItem value="CS">CS</SelectItem>
+            <SelectItem value="KANDY">Kandy</SelectItem>
+            <SelectItem value="NIBM">NIBM</SelectItem>
+            <SelectItem value="NSBM">NSBM</SelectItem>
+            <SelectItem value="RAJARATA">Rajarata</SelectItem>
+            <SelectItem value="RUHUNA">Ruhuna</SelectItem>
+            <SelectItem value="SLIIT">SLIIT</SelectItem>
           </SelectContent>
         </Select>
       </div>

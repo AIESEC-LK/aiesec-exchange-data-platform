@@ -14,20 +14,21 @@ interface OpportunityData {
     "Host MC": string;
     "Product": string;
     "Status": string;
-    "Applied At": string;
+    "Applied_Date": string;
     "Backgrounds": string;
     "Date EP Accept Offer": string;
-    "Date Marked Approved": string;
-    "Date Marked Accepted By Host": string;
-    "Date Marked Realized": string;
-    "Duration Type": string;
+    "Date_Approved": string;
+    "Matched_Date": string;
+    "Date_Realized": string;
+    "Duration_Type": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
     "Skills": string;
     "Languages": string;
     "Nationality": string;
-    "Sub Product": string;
+    "Sub_Product": string;
+    "Experience_End_Date": string;
 }
 
 // Define the request body interface
@@ -54,7 +55,7 @@ interface FilterRequestBody {
 function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
     const applications = data.filter((application) => {
         if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-            const appliedDate = new Date(application["Applied At"]);
+            const appliedDate = new Date(application["Applied_Date"]);
             const fromDate = new Date(body.from);
             const toDate = new Date(body.to);
 
@@ -81,10 +82,10 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
         if (body.project && body.project.trim() !== "" && item["Title"] !== body.project) {
             return false;
         }
-        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub Product"] !== body.subProduct) {
+        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub_Product"] !== body.subProduct) {
             return false;
         }
-        if (body.duration && body.duration.trim() !== "" && item["Duration Type"] !== body.duration) {
+        if (body.duration && body.duration.trim() !== "" && item["Duration_Type"] !== body.duration) {
             return false;
         }
         // Only filter by homeMc if it's provided in the request
@@ -114,15 +115,14 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
 
 export function processApplications(data: OpportunityData[], body: FilterRequestBody) {
 
-    // console.log(data);
+
 
 
     const applications = filterApplications(data, body);
     let filterdDataBasedOnSelections = filterDataBasedOnSelections(applications, body);
 
 
-    // console.log(applications);
-    // console.log("applications displayed");
+
 
 
 
@@ -141,10 +141,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
     const homeLcToEpIds: Record<string, Set<string>> = {};
     const hostLcPplCount: Record<string, number> = {};
     const hostLcToEpIds: Record<string, Set<string>> = {};
-    // const homeMcProcessTime: Record<string, number> = {};
-    // const processTimeforeachApplicationInHomeMc: Record<string, Set<number>> = {};
-    // const hostMcProcessTime: Record<string, number> = {};
-    // const processTimeforeachApplicationInHostMc: Record<string, Set<number>> = {};
+
 
 
 
@@ -198,7 +195,8 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
         "applied": filterdDataBasedOnSelections.length,
         "approved": 0,
         "accepted": 0,
-        "realized": 0
+        "realized": 0,
+        "completed": 0
     }
 
 
@@ -210,17 +208,21 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
 
     filterdDataBasedOnSelections.map((application) => {
 
-        if (application["Date Marked Approved"] != "") {
+        if (application["Date_Approved"] != "") {
 
             funnelCounts["approved"] += 1;
         }
 
-        if (application["Date Marked Accepted By Host"] != "") {
+        if (application["Matched_Date"] != "") {
             funnelCounts["accepted"] += 1;
         }
 
-        if (application["Date Marked Realized"] != "") {
+        if (application["Date_Realized"] != "") {
             funnelCounts["realized"] += 1;
+        }
+
+        if(application["Experience_End_Date"] != "" && application["Status"] === "completed") {
+            funnelCounts["completed"] += 1;
         }
 
 
@@ -314,7 +316,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
             homeMcCount[homeMc] = 1;
         }
 
-        if (application["Date Marked Approved"] != "") {
+        if (application["Date_Approved"] != "") {
             if (homeMcApprovedCount[homeMc]) {
                 homeMcApprovedCount[homeMc] += 1;
             } else {
@@ -322,20 +324,6 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
             }
         }
 
-
-
-        // if(application["Date Marked Approved"] != "") {
-        //     if (processTimeforeachApplicationInHomeMc[homeMc]) 
-        //     {
-        //         let processTime = new Date(application["Date Marked Approved"]).getTime() - new Date(application["Applied At"]).getTime();
-        //         processTimeforeachApplicationInHomeMc[homeMc].add(processTime);
-        //     } else {
-
-        //         let processTime = new Date(application["Date Marked Approved"]).getTime() - new Date(application["Applied At"]).getTime();
-        //         processTimeforeachApplicationInHomeMc[homeMc] = new Set<number>();
-        //         processTimeforeachApplicationInHomeMc[homeMc].add(processTime);
-        //     }
-        // }
 
 
 
@@ -347,7 +335,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
             hostMcCount[hostMc] = 1;
         }
 
-        if (application["Date Marked Approved"] != "") {
+        if (application["Date_Approved"] != "") {
             if (hostMcApprovedCount[hostMc]) {
                 hostMcApprovedCount[hostMc] += 1;
             } else {
@@ -359,18 +347,6 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
 
 
 
-        // if(application["Date Marked Approved"] != "") {
-        //     if (processTimeforeachApplicationInHostMc[hostMc]) 
-        //     {
-        //         let processTime = new Date(application["Date Marked Approved"]).getTime() - new Date(application["Applied At"]).getTime();
-        //         processTimeforeachApplicationInHostMc[hostMc].add(processTime);
-        //     } else {
-
-        //         let processTime = new Date(application["Date Marked Approved"]).getTime() - new Date(application["Applied At"]).getTime();
-        //         processTimeforeachApplicationInHostMc[hostMc] = new Set<number>();
-        //         processTimeforeachApplicationInHostMc[hostMc].add(processTime);
-        //     }
-        // }
 
 
 
@@ -399,8 +375,8 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
     // Iterate through applications
     filterdDataBasedOnSelections.forEach((application) => {
         const homeMc = application["Home MC"];
-        const appliedAtStr = application["Applied At"];
-        const approvedAtStr = application["Date Marked Approved"];
+        const appliedAtStr = application["Applied_Date"];
+        const approvedAtStr = application["Date_Approved"];
         homeMcs.push(homeMc);
         console.log(homeMc);
         
@@ -460,8 +436,8 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
     // Iterate through applications
     filterdDataBasedOnSelections.forEach((application) => {
         const hostMc = application["Host MC"];
-        const appliedAtStr = application["Applied At"];
-        const approvedAtStr = application["Date Marked Approved"];
+        const appliedAtStr = application["Applied_Date"];
+        const approvedAtStr = application["Date_Approved"];
 
         // Validate both dates exist and are not empty
         if (appliedAtStr && approvedAtStr) {
@@ -497,7 +473,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
         }
     }
 
-    console.log(averageProcessTimePerHostMc);
+   
     
 
 
@@ -514,25 +490,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
 
 
 
-    // for(let homeMc in processTimeforeachApplicationInHomeMc) {
-    //     let sum = 0;
-    //     let count = 0;
-    //     for(let time of processTimeforeachApplicationInHomeMc[homeMc]) {
-    //         sum += time;
-    //         count += 1;
-    //     }
-    //     homeMcProcessTime[homeMc] = sum/count;
-    // }
-
-    // for(let hostMc in processTimeforeachApplicationInHostMc) {
-    //     let sum = 0;
-    //     let count = 0;
-    //     for(let time of processTimeforeachApplicationInHostMc[hostMc]) {
-    //         sum += time;
-    //         count += 1;
-    //     }
-    //     hostMcProcessTime[hostMc] = sum/count;
-    // }
+  
 
     const breakdownBasedOnSelections = {
         selectedHomeLcCount: homeLcCount[body.homeLc || ''] || 0,

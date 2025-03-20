@@ -12,20 +12,21 @@ interface OpportunityData {
     "Host MC": string;
     "Product": string;
     "Status": string;
-    "Applied At": string;
+    "Applied_Date": string;
     "Backgrounds": string;
     "Date EP Accept Offer": string;
-    "Date Marked Approved": string;
-    "Date Marked Accepted By Host": string;
-    "Date Marked Realized": string;
-    "Duration Type": string;
+    "Date_Approved": string;
+    "Matched_Date": string;
+    "Date_Realized": string;
+    "Duration_Type": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
     "Skills": string;
     "Languages": string;
     "Nationality": string;
-    "Sub Product": string;
+    "Sub_Product": string;
+    "Experience_End_Date": string;
 }
 
 // Define the request body interface
@@ -52,7 +53,7 @@ interface FilterRequestBody {
 function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
     const applications = data.filter((application) => {
         if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-            const appliedDate = new Date(application["Date Marked Accepted By Host"]);
+            const appliedDate = new Date(application["Matched_Date"]);
             const fromDate = new Date(body.from);
             const toDate = new Date(body.to);
 
@@ -79,10 +80,10 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
         if (body.project && body.project.trim() !== "" && item["Title"] !== body.project) {
             return false;
         }
-        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub Product"] !== body.subProduct) {
+        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub_Product"] !== body.subProduct) {
             return false;
         }
-        if (body.duration && body.duration.trim() !== "" && item["Duration Type"] !== body.duration) {
+        if (body.duration && body.duration.trim() !== "" && item["Duration_Type"] !== body.duration) {
             return false;
         }
         // Only filter by homeMc if it's provided in the request
@@ -181,7 +182,8 @@ export function processAccepted(data: OpportunityData[], body: FilterRequestBody
         "applied":filterdDataBasedOnSelections.length,
         "approved":0,
         "accepted":0,
-        "realized":0
+        "realized":0,
+        "finished":0
     }
 
 
@@ -193,17 +195,21 @@ export function processAccepted(data: OpportunityData[], body: FilterRequestBody
 
     filterdDataBasedOnSelections.map((application) => {
 
-        if (application["Date Marked Approved"] !=  "") {
+        if (application["Date_Approved"] !=  "") {
 
             funnelCounts["approved"] += 1;
         }
 
-        if(application["Date Marked Accepted By Host"] != "") {
+        if(application["Matched_Date"] != "") {
             funnelCounts["accepted"] += 1;
         }
 
-        if(application["Date Marked Realized"] != "") {
+        if(application["Date_Realized"] != "") {
             funnelCounts["realized"] += 1;
+        }
+
+        if(application["Experience_End_Date"] != "") {
+            funnelCounts["finished"] += 1;
         }
 
 
