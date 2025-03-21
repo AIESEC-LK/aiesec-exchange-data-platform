@@ -75,7 +75,9 @@ type McEntry = {
 
 export const convertMcData = (data: McData | null): McEntry[] => {
   if (!data) return [];
-  const result = Object.entries(data).map(([mc, count]) => ({ mc, count }));
+  const result = Object.entries(data)
+    .map(([mc, count]) => ({ mc, count }))
+    .sort((a, b) => b.count - a.count); // Sort by count in descending order
   return result;
 };
 
@@ -94,7 +96,9 @@ type LcEntry = {
 
 export const convertLcDataToArray = (data: LcData | null): LcEntry[] => {
   if (!data) return [];
-  const result = Object.entries(data).map(([lc, count]) => ({ lc, count }));
+  const result = Object.entries(data)
+    .map(([lc, count]) => ({ lc, count }))
+    .sort((a, b) => b.count - a.count); // Sort by count in descending order
   return result;
 };
 
