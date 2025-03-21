@@ -29,7 +29,7 @@ export default function DashboardFilters({
     undefined
   );
   const [selectedFunction, setSelectedFunction] = React.useState<string | null>(
-    null
+    "iGV"
   );
   const [filterValues, setFilterValues] = React.useState({
     localLc: "",
@@ -42,6 +42,18 @@ export default function DashboardFilters({
     project: "",
     duration: "",
   });
+  const defaultRequest = {
+    status: "applied",
+    from: new Date(new Date().getFullYear(), 1, 1).toISOString().split("T")[0], // Start of February this year
+    to: new Date().toISOString().split("T")[0], // Today's date
+    product: "iGV",
+    homeLc: "",
+    homeMc: "",
+    hostLc: "",
+    hostMc: "",
+    project: "",
+    duration: "",
+  };
   const [request, setRequest] = React.useState({});
 
   const t_products = ["oGTa", "iGTa", "oGTe", "iGTe"];
@@ -160,7 +172,7 @@ export default function DashboardFilters({
     } else if (product === "talent/teacher") {
       formattedRequest = {
         ...formattedRequest,
-        subProject: filterValues.project,
+        subProduct: filterValues.project,
         duration: filterValues.duration,
       };
     }
@@ -191,6 +203,16 @@ export default function DashboardFilters({
     }
   };
 
+  React.useEffect(() => {
+    console.log("Default Request:", defaultRequest);
+    console.log("Fetching Data");
+    try {
+      fetchData(defaultRequest);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
       {/* Apply Filters Button - Placed at the beginning for better visibility on smaller screens */}
@@ -209,15 +231,15 @@ export default function DashboardFilters({
             <SelectValue placeholder="Local Entity" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="cc">CC</SelectItem>
-            <SelectItem value="cn">CN</SelectItem>
-            <SelectItem value="cs">CS</SelectItem>
-            <SelectItem value="kandy">Kandy</SelectItem>
-            <SelectItem value="nibm">NIBM</SelectItem>
-            <SelectItem value="nsbm">NSBM</SelectItem>
-            <SelectItem value="rajarata">Rajarata</SelectItem>
-            <SelectItem value="ruhuna">Ruhuna</SelectItem>
-            <SelectItem value="sliit">SLIIT</SelectItem>
+            <SelectItem value="CC">CC</SelectItem>
+            <SelectItem value="CN">CN</SelectItem>
+            <SelectItem value="CS">CS</SelectItem>
+            <SelectItem value="KANDY">Kandy</SelectItem>
+            <SelectItem value="NIBM">NIBM</SelectItem>
+            <SelectItem value="NSBM">NSBM</SelectItem>
+            <SelectItem value="RAJARATA">Rajarata</SelectItem>
+            <SelectItem value="RUHUNA">Ruhuna</SelectItem>
+            <SelectItem value="SLIIT">SLIIT</SelectItem>
           </SelectContent>
         </Select>
       </div>

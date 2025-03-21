@@ -44,16 +44,18 @@ export default function Home() {
   const [statsData, setStatsData] = useState<any>([]);
   React.useEffect(() => {
     setFunnelStages(
-      convertToStageArray(responce?.responce?.funnelCounts)
+      convertToStageArray(responce?.applicationResponce?.funnelCounts)
     );
     console.log("Funnel Stages", funnelStages);
     const inComingRatioTableData = converToRatioTableData(
       responce?.applicationResponce?.homeMcApprovedCount,
-      responce?.applicationResponce?.homeMcCount
+      responce?.applicationResponce?.homeMcCount,
+      responce?.applicationResponce?.averageProcessTimePerHomeMc
     );
     const outGoingRatioTableData = converToRatioTableData(
       responce?.applicationResponce?.hostMcApprovedCount,
-      responce?.applicationResponce?.hostMcCount
+      responce?.applicationResponce?.hostMcCount,
+      responce?.applicationResponce?.averageProcessTimePerHostMc
     );
 
     const incomingMcChartData = convertMcData(

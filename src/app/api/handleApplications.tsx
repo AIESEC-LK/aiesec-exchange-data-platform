@@ -1,3 +1,5 @@
+
+
 interface OpportunityData {
     ID: string;
     "EP Name": string;
@@ -12,20 +14,21 @@ interface OpportunityData {
     "Host MC": string;
     "Product": string;
     "Status": string;
-    "Applied At": string;
+    "Applied_Date": string;
     "Backgrounds": string;
     "Date EP Accept Offer": string;
-    "Date Marked Approved": string;
-    "Date Marked Accepted By Host": string;
-    "Date Marked Realized": string;
-    "Duration Type": string;
+    "Date_Approved": string;
+    "Matched_Date": string;
+    "Date_Realized": string;
+    "Duration_Type": string;
     "Organization": string;
     "SDG": string;
     "SDG Target": string;
     "Skills": string;
     "Languages": string;
     "Nationality": string;
-    "Sub Product": string;
+    "Sub_Product": string;
+    "Experience_End_Date": string;
 }
 
 // Define the request body interface
@@ -52,7 +55,7 @@ interface FilterRequestBody {
 function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
     const applications = data.filter((application) => {
         if (body.from && body.to && body.from.trim() !== "" && body.to.trim() !== "") {
-            const appliedDate = new Date(application["Applied At"]);
+            const appliedDate = new Date(application["Applied_Date"]);
             const fromDate = new Date(body.from);
             const toDate = new Date(body.to);
 
@@ -61,7 +64,7 @@ function filterApplications(data: OpportunityData[], body: FilterRequestBody) {
 
             return appliedDate >= fromDate && appliedDate <= toDate;
         }
-        
+
         // Return all applications if no date filter is applied
         return true;
     });
@@ -75,14 +78,14 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
 
 
     const filteredDataBasedOnSelections = data.filter(item => {
-         // Only filter by project (Title) if it's provided in the request
+        // Only filter by project (Title) if it's provided in the request
         if (body.project && body.project.trim() !== "" && item["Title"] !== body.project) {
             return false;
         }
-        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub Product"] !== body.subProduct) {
+        if (body.subProduct && body.subProduct.trim() !== "" && item["Sub_Product"] !== body.subProduct) {
             return false;
         }
-        if (body.duration && body.duration.trim() !== "" && item["Duration Type"] !== body.duration) {
+        if (body.duration && body.duration.trim() !== "" && item["Duration_Type"] !== body.duration) {
             return false;
         }
         // Only filter by homeMc if it's provided in the request
@@ -104,7 +107,7 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
         // If all applicable conditions pass, include the item
         return true;
     });
- return filteredDataBasedOnSelections;
+    return filteredDataBasedOnSelections;
 }
 
 
@@ -112,17 +115,16 @@ function filterDataBasedOnSelections(data: OpportunityData[], body: FilterReques
 
 export function processApplications(data: OpportunityData[], body: FilterRequestBody) {
 
-    // console.log(data);
-    
+
+
 
     const applications = filterApplications(data, body);
     let filterdDataBasedOnSelections = filterDataBasedOnSelections(applications, body);
 
 
-    // console.log(applications);
-    // console.log("applications displayed");
-    
-    
+
+
+
 
 
     const homeLcCount: Record<string, number> = {};
@@ -139,6 +141,10 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
     const homeLcToEpIds: Record<string, Set<string>> = {};
     const hostLcPplCount: Record<string, number> = {};
     const hostLcToEpIds: Record<string, Set<string>> = {};
+
+
+
+
     const americas = [
         "Argentina", "Bolivia", "Brazil", "Canada", "Chile", "Colombia", "Costa Rica",
         "Dominican Republic", "Ecuador", "El Salvador", "Guatemala", "Mexico",
@@ -186,10 +192,11 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
     };
 
     const funnelCounts = {
-        "applied":filterdDataBasedOnSelections.length,
-        "approved":0,
-        "accepted":0,
-        "realized":0
+        "applied": filterdDataBasedOnSelections.length,
+        "approved": 0,
+        "accepted": 0,
+        "realized": 0,
+        "completed": 0
     }
 
 
@@ -201,17 +208,21 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
 
     filterdDataBasedOnSelections.map((application) => {
 
-        if (application["Date Marked Approved"] !=  "") {
+        if (application["Date_Approved"] != "") {
 
             funnelCounts["approved"] += 1;
         }
 
-        if(application["Date Marked Accepted By Host"] != "") {
+        if (application["Matched_Date"] != "") {
             funnelCounts["accepted"] += 1;
         }
 
-        if(application["Date Marked Realized"] != "") {
+        if (application["Date_Realized"] != "") {
             funnelCounts["realized"] += 1;
+        }
+
+        if(application["Experience_End_Date"] != "" && application["Status"] === "completed") {
+            funnelCounts["completed"] += 1;
         }
 
 
@@ -250,7 +261,7 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
     filterdDataBasedOnSelections.map((application) => {
 
 
-        
+
 
         const homeLc = application["Home LC"];
         if (homeLcCount[homeLc]) {
@@ -293,11 +304,11 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
             hostLcPplCount[hostLc] = hostLcToEpIds[hostLc].size;
         }
 
-        
 
-        
+
+
         const homeMc = application["Home MC"];
-        
+
 
         if (homeMcCount[homeMc]) {
             homeMcCount[homeMc] += 1;
@@ -305,14 +316,15 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
             homeMcCount[homeMc] = 1;
         }
 
-        if(application["Date Marked Approved"] != "") {
-            if (homeMcApprovedCount[homeMc]) 
-            {
+        if (application["Date_Approved"] != "") {
+            if (homeMcApprovedCount[homeMc]) {
                 homeMcApprovedCount[homeMc] += 1;
             } else {
                 homeMcApprovedCount[homeMc] = 1;
             }
         }
+
+
 
 
 
@@ -323,9 +335,8 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
             hostMcCount[hostMc] = 1;
         }
 
-        if(application["Date Marked Approved"] != "") {
-            if (hostMcApprovedCount[hostMc]) 
-            {
+        if (application["Date_Approved"] != "") {
+            if (hostMcApprovedCount[hostMc]) {
                 hostMcApprovedCount[hostMc] += 1;
             } else {
                 hostMcApprovedCount[hostMc] = 1;
@@ -337,7 +348,16 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
 
 
 
-       
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -348,6 +368,130 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
 
     });
 
+
+
+    const processTimeforeachApplicationInHomeMc: Record<string, number[]> = {};
+    const homeMcs: string[] = [];
+    // Iterate through applications
+    filterdDataBasedOnSelections.forEach((application) => {
+        const homeMc = application["Home MC"];
+        const appliedAtStr = application["Applied_Date"];
+        const approvedAtStr = application["Date_Approved"];
+        homeMcs.push(homeMc);
+        console.log(homeMc);
+        
+
+        // Validate both dates exist and are not empty
+        if (appliedAtStr && approvedAtStr) {
+            const appliedAt = new Date(appliedAtStr);
+            const approvedAt = new Date(approvedAtStr);
+
+            // Check if both dates are valid
+            if (!isNaN(appliedAt.getTime()) && !isNaN(approvedAt.getTime())) {
+                let processTimeInDays = (approvedAt.getTime() - appliedAt.getTime()) / (1000 * 60 * 60 * 24);
+
+                // Ensure the homeMc key exists in the object
+                if (!processTimeforeachApplicationInHomeMc[homeMc]) {
+                    processTimeforeachApplicationInHomeMc[homeMc] = [];
+                }
+
+                // Store process time in days
+                processTimeforeachApplicationInHomeMc[homeMc].push(processTimeInDays);
+            }
+        }
+    });
+
+    // Calculate average process time for each Home MC (optional)
+    const averageProcessTimePerHomeMc: Record<string, number> = {};
+
+    for (const homeMc in processTimeforeachApplicationInHomeMc) {
+
+        console.log(homeMc);
+        
+        const processTimes = processTimeforeachApplicationInHomeMc[homeMc];
+        if (processTimes.length > 0) {
+            averageProcessTimePerHomeMc[homeMc] =
+                processTimes.reduce((sum, time) => sum + time, 0) / processTimes.length;
+        }
+    }
+
+    console.log(averageProcessTimePerHomeMc);
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const processTimeforeachApplicationInHostMc: Record<string, number[]> = {};
+
+    // Iterate through applications
+    filterdDataBasedOnSelections.forEach((application) => {
+        const hostMc = application["Host MC"];
+        const appliedAtStr = application["Applied_Date"];
+        const approvedAtStr = application["Date_Approved"];
+
+        // Validate both dates exist and are not empty
+        if (appliedAtStr && approvedAtStr) {
+            const appliedAt = new Date(appliedAtStr);
+            const approvedAt = new Date(approvedAtStr);
+
+            // Check if both dates are valid
+            if (!isNaN(appliedAt.getTime()) && !isNaN(approvedAt.getTime())) {
+                let processTimeInDays = (approvedAt.getTime() - appliedAt.getTime()) / (1000 * 60 * 60 * 24);
+
+                // Ensure the homeMc key exists in the object
+                if (!processTimeforeachApplicationInHostMc[hostMc]) {
+                    processTimeforeachApplicationInHostMc[hostMc] = [];
+                }
+
+                // Store process time in days
+                processTimeforeachApplicationInHostMc[hostMc].push(processTimeInDays);
+            }
+        }
+    });
+
+    // Calculate average process time for each Home MC (optional)
+    const averageProcessTimePerHostMc: Record<string, number> = {};
+
+    for (const hostMc in processTimeforeachApplicationInHostMc) {
+
+        // console.log(hostMc);
+
+        const processTimes = processTimeforeachApplicationInHostMc[hostMc];
+        if (processTimes.length > 0) {
+            averageProcessTimePerHostMc[hostMc] =
+                processTimes.reduce((sum, time) => sum + time, 0) / processTimes.length;
+        }
+    }
+
+   
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
     const breakdownBasedOnSelections = {
         selectedHomeLcCount: homeLcCount[body.homeLc || ''] || 0,
         selectedHostLcCount: hostLcCount[body.hostLc || ''] || 0,
@@ -356,7 +500,14 @@ export function processApplications(data: OpportunityData[], body: FilterRequest
     }
 
     const breakdown = {
+
         homeLcCount,
+        homeMcs,
+
+        averageProcessTimePerHomeMc,
+        processTimeforeachApplicationInHomeMc,
+
+        averageProcessTimePerHostMc,
         homeMcCount,
         hostLcCount,
         hostMcCount,
