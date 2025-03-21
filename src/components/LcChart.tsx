@@ -60,34 +60,38 @@ export default function LcChart({
         <CardTitle>LC Breakdown by selected Project</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <div style={{ height: 400, overflowY: "auto" }}>
-            <ResponsiveContainer width="100%" height={chartData.length * 30}>
-              <BarChart
-                accessibilityLayer
-                data={chartData}
-                layout="vertical"
-                margin={{
-                  left: -20,
-                }}
-              >
-                <XAxis type="number" dataKey="count" hide />
-                <YAxis
-                  dataKey="lc"
-                  type="category"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                  tickFormatter={(value) => value.slice(0, 3)}
-                />
-                <ChartTooltip cursor={false} content={<CustomTooltip />} />
-                <Bar dataKey="count" fill="var(--color-count)" radius={5}>
-                  <LabelList dataKey="count" position="right" />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </ChartContainer>
+        {chartData.length > 0 ? (
+          <ChartContainer config={chartConfig}>
+            <div style={{ height: 400, overflowY: "auto" }}>
+              <ResponsiveContainer width="100%" height={chartData.length * 30}>
+                <BarChart
+                  accessibilityLayer
+                  data={chartData}
+                  layout="vertical"
+                  margin={{
+                    left: -20,
+                  }}
+                >
+                  <XAxis type="number" dataKey="count" hide />
+                  <YAxis
+                    dataKey="lc"
+                    type="category"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                  />
+                  <ChartTooltip cursor={false} content={<CustomTooltip />} />
+                  <Bar dataKey="count" fill="var(--color-count)" radius={5}>
+                    <LabelList dataKey="count" position="right" />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </ChartContainer>
+        ) : (
+          <div className="text-center text-gray-500">No data available.</div>
+        )}
       </CardContent>
     </Card>
   );
