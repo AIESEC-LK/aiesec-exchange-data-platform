@@ -10,8 +10,73 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "./DatePickerWithRange"; // Correct import!
+
+import { Check, ChevronsUpDown } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+const hostMCs = [
+  {
+    value: "China",
+    label: "China",
+  },
+  {
+    value: "India",
+    label: "India",
+  },
+  {
+    value: "Indonesia",
+    label: "Indonesia",
+
+  },
+  {
+    value: "Malaysia",
+    label: "Malaysia",
+  },
+  {
+    value: "Eukraine",
+    label: "Eukraine",
+  },
+]
+
+const hostLCs = [
+  {
+    value: "Istanbul",
+    label: "Istanbul",
+  },
+  {
+    value: "Bardo",
+    label: "Bardo",
+  },
+  {
+    value: "Helwan",
+    label: "Helwan",
+  },
+  {
+    value: "Mumbai",
+    label: "Mumbai",
+  },
+  {
+    value: "Hyderabad",
+    label: "Hyderabad",
+  },
+]
 
 export default function DashboardFilters({
   product,
@@ -43,6 +108,12 @@ export default function DashboardFilters({
     duration: "",
   });
   const [request, setRequest] = React.useState({});
+
+  const [McComboOpen, setMcComboOpen] = React.useState(false)
+  const [LcComboOpen, setLcComboOpen] = React.useState(false)
+
+  const [hostMcValue, setHostMcValue] = React.useState("")
+  const [hostLcValue, setHostLcValue] = React.useState("")
 
   const t_products = ["oGTa", "iGTa", "oGTe", "iGTe"];
   const v_products = ["oGV", "iGV"];
@@ -307,40 +378,98 @@ export default function DashboardFilters({
 
       {/* MC Selection */}
       <div className="w-full sm:w-auto">
-        {" "}
-        {/* Added wrapper div for width control */}
-        <Select
-          onValueChange={(value) => handleSelectChange("foreignMc", value)}
-        >
-          <SelectTrigger className="w-full sm:w-32">
-            <SelectValue placeholder={mcLabel} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Pakistan">Pakistan</SelectItem>
-            <SelectItem value="Germany">Germany</SelectItem>
-            <SelectItem value="India">India</SelectItem>
-            <SelectItem value="Turkey">Turkey</SelectItem>
-
-          </SelectContent>
-        </Select>
+        <Popover open={McComboOpen} onOpenChange={setMcComboOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={McComboOpen}
+              className="w-[120px] justify-between font-normal text-gray-500"
+            >
+              {hostMcValue
+                ? hostMCs.find((mc) => mc.value === hostMcValue)?.label
+                : "Host MC"}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              <CommandInput placeholder="Search MC..." className="h-9" />
+              <CommandList>
+                <CommandEmpty>No MC found.</CommandEmpty>
+                <CommandGroup>
+                  {hostMCs.map((mc) => (
+                    <CommandItem
+                      key={mc.value}
+                      value={mc.value}
+                      onSelect={(currentValue) => {
+                        handleSelectChange("foreignMc", currentValue)
+                        setHostMcValue(currentValue === hostMcValue ? "" : currentValue)
+                        setMcComboOpen(false)
+                      }}
+                    >
+                      {mc.label}
+                      <Check
+                        className={cn(
+                          "ml-auto",
+                          hostMcValue === mc.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* LC Selection */}
       <div className="w-full sm:w-auto">
-        {" "}
-        {/* Added wrapper div for width control */}
-        <Select
-          onValueChange={(value) => handleSelectChange("foreignLc", value)}
-        >
-          <SelectTrigger className="w-full sm:w-32">
-            <SelectValue placeholder={lcLabel} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ESKISEHIR">ESKISEHIR</SelectItem>
-            <SelectItem value="ISTANBUL ASIA">ISTANBUL ASIA
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        <Popover open={LcComboOpen} onOpenChange={setLcComboOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={LcComboOpen}
+              className="w-[120px] justify-between font-normal text-gray-500"
+            >
+              {hostLcValue
+                ? hostLCs.find((mc) => mc.value === hostLcValue)?.label
+                : "Host LC"}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              <CommandInput placeholder="Search LC..." className="h-9" />
+              <CommandList>
+                <CommandEmpty>No LC found.</CommandEmpty>
+                <CommandGroup>
+                  {hostLCs.map((lc) => (
+                    <CommandItem
+                      key={lc.value}
+                      value={lc.value}
+                      onSelect={(currentValue) => {
+                        handleSelectChange("foreignLc", currentValue)
+                        setHostLcValue(currentValue === hostLcValue ? "" : currentValue)
+                        setLcComboOpen(false)
+                      }}
+                    >
+                      {lc.label}
+                      <Check
+                        className={cn(
+                          "ml-auto",
+                          hostLcValue === lc.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* Duration Filter (Hidden for Global Volunteer) */}
