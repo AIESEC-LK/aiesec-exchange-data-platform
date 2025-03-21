@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -17,10 +16,12 @@ export default function DashboardFilters({
   product,
   setResponce,
   setFunctioName,
+  setLoading,
 }: {
   product: string;
   setResponce: (values: any) => void;
   setFunctioName: (value: string) => void;
+  setLoading: (value: boolean) => void;
 }) {
   const handleFunctionNameChange = (value: string) => {
     setFunctioName(value);
@@ -185,6 +186,7 @@ export default function DashboardFilters({
   }
 
   const fetchData = async (params: any) => {
+    setLoading(true); // Set loading state to true
     try {
       const response = await fetch("/api", {
         method: "POST",
@@ -200,6 +202,7 @@ export default function DashboardFilters({
       console.error("Fetch Error:", err);
     } finally {
       console.log("Data fetch operation completed.");
+      setLoading(false); // Set loading state to false
     }
   };
 
@@ -266,17 +269,17 @@ export default function DashboardFilters({
           <SelectContent>
             {product === "volunteer"
               ? v_products.map((p) => (
-                <SelectItem key={p} value={p}>
-                  {p}
-                </SelectItem>
-              ))
-              : product === "talent/teacher"
-                ? t_products.map((p) => (
                   <SelectItem key={p} value={p}>
                     {p}
                   </SelectItem>
                 ))
-                : null}
+              : product === "talent/teacher"
+              ? t_products.map((p) => (
+                  <SelectItem key={p} value={p}>
+                    {p}
+                  </SelectItem>
+                ))
+              : null}
           </SelectContent>
         </Select>
       </div>
@@ -311,17 +314,17 @@ export default function DashboardFilters({
             <SelectContent>
               {product === "volunteer"
                 ? gv_projects.map((p) => (
-                  <SelectItem key={p} value={p}>
-                    {p}
-                  </SelectItem>
-                ))
-                : product === "talent/teacher"
-                  ? t_projects.map((p) => (
                     <SelectItem key={p} value={p}>
                       {p}
                     </SelectItem>
                   ))
-                  : null}
+                : product === "talent/teacher"
+                ? t_projects.map((p) => (
+                    <SelectItem key={p} value={p}>
+                      {p}
+                    </SelectItem>
+                  ))
+                : null}
             </SelectContent>
           </Select>
         </div>
@@ -342,7 +345,6 @@ export default function DashboardFilters({
             <SelectItem value="Germany">Germany</SelectItem>
             <SelectItem value="India">India</SelectItem>
             <SelectItem value="Turkey">Turkey</SelectItem>
-
           </SelectContent>
         </Select>
       </div>
@@ -359,8 +361,7 @@ export default function DashboardFilters({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="ESKISEHIR">ESKISEHIR</SelectItem>
-            <SelectItem value="ISTANBUL ASIA">ISTANBUL ASIA
-            </SelectItem>
+            <SelectItem value="ISTANBUL ASIA">ISTANBUL ASIA</SelectItem>
           </SelectContent>
         </Select>
       </div>
