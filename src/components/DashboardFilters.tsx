@@ -32,49 +32,19 @@ import {
 } from "@/components/ui/popover";
 
 const hostMCs = [
-  {
-    value: "China",
-    label: "China",
-  },
-  {
-    value: "India",
-    label: "India",
-  },
-  {
-    value: "Indonesia",
-    label: "Indonesia",
-  },
-  {
-    value: "Malaysia",
-    label: "Malaysia",
-  },
-  {
-    value: "Ukraine",
-    label: "Ukraine",
-  },
+  { value: "China", label: "China" },
+  { value: "India", label: "India" },
+  { value: "Indonesia", label: "Indonesia" },
+  { value: "Malaysia", label: "Malaysia" },
+  { value: "Ukraine", label: "Ukraine" },
 ];
 
 const hostLCs = [
-  {
-    value: "Istanbul",
-    label: "Istanbul",
-  },
-  {
-    value: "Bardo",
-    label: "Bardo",
-  },
-  {
-    value: "Helwan",
-    label: "Helwan",
-  },
-  {
-    value: "Mumbai",
-    label: "Mumbai",
-  },
-  {
-    value: "Hyderabad",
-    label: "Hyderabad",
-  },
+  { value: "Istanbul", label: "Istanbul" },
+  { value: "Bardo", label: "Bardo" },
+  { value: "Helwan", label: "Helwan" },
+  { value: "Mumbai", label: "Mumbai" },
+  { value: "Hyderabad", label: "Hyderabad" },
 ];
 
 export default function DashboardFilters({
@@ -82,19 +52,20 @@ export default function DashboardFilters({
   setResponce,
   setFunctioName,
   setLoading,
+  setSelectedStatus,
 }: {
   product: string;
   setResponce: (values: any) => void;
   setFunctioName: (value: string) => void;
   setLoading: (value: boolean) => void;
+  setSelectedStatus: (value: string | null) => void;
 }) {
   const handleFunctionNameChange = (value: string) => {
     setFunctioName(value);
   };
 
-  // Default values - mutable at runtime
   const defaultFunctionName = "iGV";
-  const defaultLcTermStartDate = new Date(2025, 1, 1); // February 1, 2025 - LC Term Start Date updated to 2025
+  const defaultLcTermStartDate = new Date(2025, 1, 1);
 
   const defaultFilterValues = {
     localLc: "",
@@ -164,10 +135,7 @@ export default function DashboardFilters({
   const showProjectFilter = !(
     selectedFunction === "iGTe" || selectedFunction === "oGTe"
   );
-  const isInternal =
-    selectedFunction === "iGV" ||
-    selectedFunction === "iGTa" ||
-    selectedFunction === "iGTe";
+  const isInternal = ["iGV", "iGTa", "iGTe"].includes(selectedFunction || "");
   const isTalentTeacher = product === "talent/teacher";
   const mcLabel = isInternal ? "Home MC" : "Host MC";
   const lcLabel = isInternal ? "Home LC" : "Host LC";
@@ -181,11 +149,13 @@ export default function DashboardFilters({
 
   const handleSelectChange = (name: string, value: string) => {
     setFilterValues((prev: any) => ({ ...prev, [name]: value }));
+    if (name === "status") {
+      setSelectedStatus(value);
+    }
   };
 
   const handleDateChange = (range: DateRange | undefined) => {
     setDateRange(range);
-
     setFilterValues((prev: any) => ({
       ...prev,
       from: range?.from ? range.from.toISOString().split("T")[0] : "",
@@ -195,24 +165,20 @@ export default function DashboardFilters({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const formattedRequest = formatRequest(filterValues);
     console.log("Filter Values:", filterValues);
     console.log("Formatted Request:", formattedRequest);
-
     await fetchData(formattedRequest);
   };
 
   const handleClearFilters = () => {
     setFilterValues(defaultFilterValues);
-    setDateRange({
-      from: defaultLcTermStartDate,
-      to: new Date(),
-    });
-    setSelectedFunction(undefined); // Clear function selection
+    setDateRange({ from: defaultLcTermStartDate, to: new Date() });
+    setSelectedFunction(undefined);
     setFunctioName(defaultFunctionName);
-    setHostMcValue(""); // Clear Host MC selection
-    setHostLcValue(""); // Clear Host LC selection
+    setHostMcValue("");
+    setHostLcValue("");
+    setSelectedStatus(null);
   };
 
   function formatRequest(filterValues: any) {
@@ -242,16 +208,10 @@ export default function DashboardFilters({
     }
 
     if (product === "volunteer") {
-      formattedRequest = {
-        ...formattedRequest,
-        project: filterValues.project,
-      };
+      formattedRequest.project = filterValues.project;
     } else if (product === "talent/teacher") {
-      formattedRequest = {
-        ...formattedRequest,
-        subProduct: filterValues.project,
-        duration: filterValues.duration,
-      };
+      formattedRequest.subProduct = filterValues.project;
+      formattedRequest.duration = filterValues.duration;
     }
 
     setRequest(formattedRequest);
@@ -268,32 +228,25 @@ export default function DashboardFilters({
       });
       if (!response.ok) throw new Error("Failed to fetch data");
       const responseData = await response.json();
-      console.log("Fetched Data:", responseData);
       setResponce(responseData);
     } catch (err) {
       console.error("Fetch Error:", err);
     } finally {
       setLoading(false);
-      console.log("Data fetch operation completed.");
     }
   };
 
   React.useEffect(() => {
     const initialRequest = formatRequest(defaultFilterValues);
-    console.log("Initial Default Request:", initialRequest);
     fetchData(initialRequest);
     setFunctioName(defaultFunctionName);
     setFilterValues(defaultFilterValues);
-    setDateRange({
-      from: defaultLcTermStartDate,
-      to: new Date(),
-    });
+    setDateRange({ from: defaultLcTermStartDate, to: new Date() });
     setSelectedFunction(defaultFunctionName);
   }, []);
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
-      {/* Apply and Clear Filters Buttons */}
       <div className="w-full sm:w-auto flex justify-center sm:justify-start gap-2">
         <Button variant="outline" size="sm" onClick={handleSubmit}>
           Apply Filters
@@ -303,7 +256,6 @@ export default function DashboardFilters({
         </Button>
       </div>
 
-      {/* Entity Selection */}
       <div className="w-full sm:w-auto">
         <Select
           onValueChange={(value) => handleSelectChange("localLc", value)}
@@ -326,7 +278,6 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {/* Date Picker */}
       <div className="w-full sm:w-auto">
         <DatePickerWithRange
           value={dateRange}
@@ -334,12 +285,9 @@ export default function DashboardFilters({
         />
       </div>
 
-      {/* Functions Selection */}
       <div className="w-full sm:w-auto">
         <Select
-          onValueChange={(e) => {
-            handleFunctionSelect(e);
-          }}
+          onValueChange={(e) => handleFunctionSelect(e)}
           value={selectedFunction}
         >
           <SelectTrigger className="w-full sm:w-32">
@@ -363,7 +311,6 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {/* Status Selection */}
       <div className="w-full sm:w-auto">
         <Select
           onValueChange={(value) => handleSelectChange("status", value)}
@@ -382,7 +329,6 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {/* Project Filter */}
       {showProjectFilter && (
         <div className="w-full sm:w-auto">
           <Select
@@ -411,7 +357,6 @@ export default function DashboardFilters({
         </div>
       )}
 
-      {/* MC Selection */}
       <div className="w-full sm:w-auto">
         <Popover open={McComboOpen} onOpenChange={setMcComboOpen}>
           <PopoverTrigger asChild>
@@ -461,7 +406,6 @@ export default function DashboardFilters({
         </Popover>
       </div>
 
-      {/* LC Selection */}
       <div className="w-full sm:w-auto">
         <Popover open={LcComboOpen} onOpenChange={setLcComboOpen}>
           <PopoverTrigger asChild>
@@ -511,7 +455,6 @@ export default function DashboardFilters({
         </Popover>
       </div>
 
-      {/* Duration Filter (Hidden for Global Volunteer) */}
       {product !== "volunteer" && (
         <div className="w-full sm:w-auto">
           <Select
