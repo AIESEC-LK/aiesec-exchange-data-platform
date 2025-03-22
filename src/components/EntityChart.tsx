@@ -95,7 +95,7 @@ export function EntityChart({
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow flex justify-center items-center min-h-[300px]">
+      <CardContent className="flex-grow flex">
         {loading ? (
           <div className="flex flex-col items-center justify-center space-y-2">
             <Skeleton className="w-[200px] h-[20px]" />
