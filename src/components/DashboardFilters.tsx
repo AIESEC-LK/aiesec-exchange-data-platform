@@ -93,7 +93,7 @@ export default function DashboardFilters({
   };
 
   // Default values - mutable at runtime
-  const defaultFunctionName = "iGV";
+  const defaultFunctionName = product === "volunteer" ? "iGV" : "iGTa";
   const defaultLcTermStartDate = new Date(2025, 1, 1); // February 1, 2025 - LC Term Start Date updated to 2025
 
   const defaultFilterValues = {
@@ -289,7 +289,7 @@ export default function DashboardFilters({
       to: new Date(),
     });
     setSelectedFunction(defaultFunctionName);
-  }, []);
+  }, [product]);
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">

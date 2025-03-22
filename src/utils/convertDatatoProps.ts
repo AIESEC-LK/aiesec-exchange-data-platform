@@ -138,17 +138,14 @@ export const convertEntityDataToArray = (
     }
   });
   const result = Object.entries(data).map(([entity, count]) => {
-    let shortEntity =
-      entity.charAt(0).toUpperCase() + entity.slice(1, 3).toLowerCase();
+    let shortEntity = entity;
     if (entity.toUpperCase() === "COLOMBO SOUTH") shortEntity = "CS";
     else if (entity.toUpperCase() === "COLOMBO NORTH") shortEntity = "CN";
     else if (entity.toUpperCase() === "COLOMBO CENTRAL") shortEntity = "CC";
-    else if (entity.toUpperCase() === "KANDY") shortEntity = "Kan";
-    else if (entity.toUpperCase() === "RAJARATA") shortEntity = "Raj";
-    else if (entity.toUpperCase() === "RUHUNA") shortEntity = "Ruh";
     else if (entity === "MC Sri Lanka") shortEntity = "MC";
     return { entity: shortEntity, count };
   });
+  result.sort((a, b) => b.count - a.count); // Sort by count in descending order
   return result;
 };
 

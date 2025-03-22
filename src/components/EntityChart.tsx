@@ -10,7 +10,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 
 const chartConfig = {
   count: {
@@ -108,6 +107,7 @@ export function EntityChart({
             <BarChart
               data={formattedChartData}
               className="w-full h-full" // Responsive width and height
+              margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
@@ -116,6 +116,17 @@ export function EntityChart({
                 tickMargin={10}
                 axisLine={false}
                 tickFormatter={(value) => value}
+                interval={0} // Show all entity names
+                tick={(props) => (
+                  <text
+                    {...props}
+                    transform={`rotate(-90, ${props.x}, ${props.y})`} // Rotate labels for better alignment
+                    textAnchor="end"
+                    className="text-xs" // Adjust font size for responsiveness
+                  >
+                    {props.payload.value}
+                  </text>
+                )}
               />
               <YAxis />
               <ChartTooltip
@@ -127,6 +138,11 @@ export function EntityChart({
                 fill="hsl(210, 100%, 36%)"
                 barSize={30}
                 radius={[8, 8, 0, 0]}
+                label={{
+                  position: "top", // Show count values on top of bars
+                  fill: "#000", // Black text for visibility
+                  fontSize: 12, // Adjust font size for responsiveness
+                }}
               />
             </BarChart>
           </ChartContainer>
