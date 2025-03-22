@@ -119,17 +119,33 @@ export const convertEntityDataToArray = (
   data: EntityData | null
 ): EntityEntry[] => {
   if (!data) return [];
+  const entities = [
+    "COLOMBO SOUTH",
+    "COLOMBO NORTH",
+    "COLOMBO CENTRAL",
+    "KANDY",
+    "RAJARATA",
+    "RUHUNA",
+    "MC Sri Lanka",
+    "SLIIT",
+    "NSBM",
+    "NIBM",
+    "USJ",
+  ];
+  entities.forEach((entity) => {
+    if (!data[entity]) {
+      data[entity] = 0; // Add zero as count if not provided in input data
+    }
+  });
   const result = Object.entries(data).map(([entity, count]) => {
     let shortEntity = entity;
     if (entity.toUpperCase() === "COLOMBO SOUTH") shortEntity = "CS";
     else if (entity.toUpperCase() === "COLOMBO NORTH") shortEntity = "CN";
     else if (entity.toUpperCase() === "COLOMBO CENTRAL") shortEntity = "CC";
-    else if (entity.toUpperCase() === "KANDY") shortEntity = "Kan";
-    else if (entity.toUpperCase() === "RAJARATA") shortEntity = "Raj";
-    else if (entity.toUpperCase() === "RUHUNA") shortEntity = "Ruh";
     else if (entity === "MC Sri Lanka") shortEntity = "MC";
     return { entity: shortEntity, count };
   });
+  result.sort((a, b) => b.count - a.count); // Sort by count in descending order
   return result;
 };
 
@@ -145,7 +161,7 @@ export function convertToRegionalData(
   if (!input) return [];
   return Object.entries(input)
     .map(([key, value]) => ({
-      region: key.replace(/\s+/g, "_"), // Replace spaces with underscores
+      region: key, // Replace spaces with underscores
       count: value,
     }))
     .sort((a, b) => b.count - a.count); // Sort by count in descending order
@@ -156,7 +172,27 @@ export function convertRankingData(
   lcPplCount: Record<string, number> | null
 ): { entity: string; apl: number; ppl: number }[] {
   if (!lcCount || !lcPplCount) return [];
-
+  const allEntities = [
+    "COLOMBO SOUTH",
+    "COLOMBO NORTH",
+    "COLOMBO CENTRAL",
+    "KANDY",
+    "RAJARATA",
+    "RUHUNA",
+    "MC Sri Lanka",
+    "SLIIT",
+    "NSBM",
+    "NIBM",
+    "USJ",
+  ];
+  allEntities.forEach((entity) => {
+    if (!lcCount[entity]) {
+      lcCount[entity] = 0; // Add zero as count if not provided in input data
+    }
+    if (!lcPplCount[entity]) {
+      lcPplCount[entity] = 0; // Add zero as count if not provided in input data
+    }
+  });
   const entities = Object.keys(lcCount);
   const arr = entities.map((entity) => ({
     entity,

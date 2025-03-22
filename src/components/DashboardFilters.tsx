@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -9,52 +10,126 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { DateRange } from "react-day-picker";
-import { DatePickerWithRange } from "./DatePickerWithRange"; // Correct import!
+import { DatePickerWithRange } from "./DatePickerWithRange";
+
+import { Check, ChevronsUpDown } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+const hostMCs = [
+  {
+    value: "China",
+    label: "China",
+  },
+  {
+    value: "India",
+    label: "India",
+  },
+  {
+    value: "Indonesia",
+    label: "Indonesia",
+  },
+  {
+    value: "Malaysia",
+    label: "Malaysia",
+  },
+  {
+    value: "Ukraine",
+    label: "Ukraine",
+  },
+];
+
+const hostLCs = [
+  {
+    value: "Istanbul",
+    label: "Istanbul",
+  },
+  {
+    value: "Bardo",
+    label: "Bardo",
+  },
+  {
+    value: "Helwan",
+    label: "Helwan",
+  },
+  {
+    value: "Mumbai",
+    label: "Mumbai",
+  },
+  {
+    value: "Hyderabad",
+    label: "Hyderabad",
+  },
+];
 
 export default function DashboardFilters({
   product,
   setResponce,
   setFunctioName,
   setLoading,
+  setProjectInPage,
+  setStatusInPage,
 }: {
   product: string;
   setResponce: (values: any) => void;
   setFunctioName: (value: string) => void;
   setLoading: (value: boolean) => void;
+  setProjectInPage: (value: string) => void;
+  setStatusInPage: (value: string) => void;
 }) {
   const handleFunctionNameChange = (value: string) => {
     setFunctioName(value);
   };
-  const [dateRange, setDateRange] = React.useState<DateRange | undefined>(
-    undefined
-  );
-  const [selectedFunction, setSelectedFunction] = React.useState<string | null>(
-    "iGV"
-  );
-  const [filterValues, setFilterValues] = React.useState({
+  const handleprojectChange = (value: string) => {
+    setProjectInPage(value);
+  };
+  const handleStatusChange = (value: string) => {
+    setStatusInPage(value);
+  };
+
+  // Default values - mutable at runtime
+  const defaultFunctionName = product === "volunteer" ? "iGV" : "iGTa";
+  const defaultLcTermStartDate = new Date(2025, 1, 1); // February 1, 2025 - LC Term Start Date updated to 2025
+
+  const defaultFilterValues = {
     localLc: "",
-    from: "",
-    to: "",
-    product: "",
+    from: defaultLcTermStartDate.toISOString().split("T")[0],
+    to: new Date().toISOString().split("T")[0],
+    product: defaultFunctionName,
     foreignMc: "",
     foreignLc: "",
     status: "",
     project: "",
     duration: "",
-  });
-  const defaultRequest = {
-    status: "applied",
-    from: new Date(new Date().getFullYear(), 1, 1).toISOString().split("T")[0], // Start of February this year
-    to: new Date().toISOString().split("T")[0], // Today's date
-    product: "iGV",
-    homeLc: "",
-    homeMc: "",
-    hostLc: "",
-    hostMc: "",
-    project: "",
-    duration: "",
   };
+
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
+    from: defaultLcTermStartDate,
+    to: new Date(),
+  });
+  const [selectedFunction, setSelectedFunction] = React.useState<
+    string | undefined
+  >(defaultFunctionName);
+  const [filterValues, setFilterValues] = React.useState(defaultFilterValues);
+  const [McComboOpen, setMcComboOpen] = React.useState(false);
+  const [LcComboOpen, setLcComboOpen] = React.useState(false);
+  const [hostMcValue, setHostMcValue] = React.useState("");
+  const [hostLcValue, setHostLcValue] = React.useState("");
   const [request, setRequest] = React.useState({});
 
   const t_products = ["oGTa", "iGTa", "oGTe", "iGTe"];
@@ -92,7 +167,8 @@ export default function DashboardFilters({
 
   const handleFunctionSelect = (value: string) => {
     setSelectedFunction(value);
-    handleSelectChange("product", value); // Also update product in filterValues
+    handleFunctionNameChange(value);
+    handleSelectChange("product", value);
   };
 
   const showProjectFilter = !(
@@ -109,7 +185,7 @@ export default function DashboardFilters({
 
   const handleDateRangeChange = (newDateRange: DateRange | undefined) => {
     setDateRange(newDateRange);
-    handleDateChange(newDateRange); // Update filterValues with date range
+    handleDateChange(newDateRange);
     console.log("Selected Date Range in DashboardFilters:", newDateRange);
   };
 
@@ -128,13 +204,32 @@ export default function DashboardFilters({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
-    const formattedRequest = formatRequest(filterValues); // Format the request
+    const formattedRequest = formatRequest(filterValues);
     console.log("Filter Values:", filterValues);
     console.log("Formatted Request:", formattedRequest);
+    handleStatusChange(formattedRequest.status);
 
-    await fetchData(formattedRequest); // Fetch data with formatted request
+    if (product === "volunteer") {
+      handleprojectChange(formattedRequest.project);
+    } else {
+      handleprojectChange(formattedRequest.subProduct);
+    }
+
+    await fetchData(formattedRequest);
+  };
+
+  const handleClearFilters = () => {
+    setFilterValues(defaultFilterValues);
+    setDateRange({
+      from: defaultLcTermStartDate,
+      to: new Date(),
+    });
+    setSelectedFunction(undefined); // Clear function selection
+    setFunctioName(defaultFunctionName);
+    setHostMcValue(""); // Clear Host MC selection
+    setHostLcValue(""); // Clear Host LC selection
   };
 
   function formatRequest(filterValues: any) {
@@ -145,26 +240,24 @@ export default function DashboardFilters({
       product: filterValues.product,
     };
 
-    // Handle product-specific fields
     if (["iGTa", "iGTe", "iGV"].includes(filterValues.product)) {
       formattedRequest = {
         ...formattedRequest,
         homeLc: filterValues.foreignLc,
         homeMc: filterValues.foreignMc,
         hostLc: filterValues.localLc,
-        hostMc: "Sri Lanka", // Assuming this is the default value
+        hostMc: "Sri Lanka",
       };
     } else if (["oGTa", "oGTe", "oGV"].includes(filterValues.product)) {
       formattedRequest = {
         ...formattedRequest,
         homeLc: filterValues.localLc,
-        homeMc: "Sri Lanka", // Assuming this is the default value
+        homeMc: "Sri Lanka",
         hostLc: filterValues.foreignLc,
         hostMc: filterValues.foreignMc,
       };
     }
 
-    // Handle project-specific fields
     if (product === "volunteer") {
       formattedRequest = {
         ...formattedRequest,
@@ -178,15 +271,12 @@ export default function DashboardFilters({
       };
     }
 
-    // Update the request state (optional, but might be useful for debugging or other purposes)
     setRequest(formattedRequest);
-
-    // Return the formatted request for immediate use
     return formattedRequest;
   }
 
   const fetchData = async (params: any) => {
-    setLoading(true); // Set loading state to true
+    setLoading(true);
     try {
       const response = await fetch("/api", {
         method: "POST",
@@ -196,40 +286,46 @@ export default function DashboardFilters({
       if (!response.ok) throw new Error("Failed to fetch data");
       const responseData = await response.json();
       console.log("Fetched Data:", responseData);
-
       setResponce(responseData);
     } catch (err) {
       console.error("Fetch Error:", err);
     } finally {
+      setLoading(false);
       console.log("Data fetch operation completed.");
-      setLoading(false); // Set loading state to false
     }
   };
 
   React.useEffect(() => {
-    console.log("Default Request:", defaultRequest);
-    console.log("Fetching Data");
-    try {
-      fetchData(defaultRequest);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, []);
+    const initialRequest = formatRequest(defaultFilterValues);
+    console.log("Initial Default Request:", initialRequest);
+    fetchData(initialRequest);
+    setFunctioName(defaultFunctionName);
+    setFilterValues(defaultFilterValues);
+    setDateRange({
+      from: defaultLcTermStartDate,
+      to: new Date(),
+    });
+    setSelectedFunction(defaultFunctionName);
+  }, [product]);
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
-      {/* Apply Filters Button - Placed at the beginning for better visibility on smaller screens */}
-      <div className="w-full sm:w-auto flex justify-center sm:justify-start">
+      {/* Apply and Clear Filters Buttons */}
+      <div className="w-full sm:w-auto flex justify-center sm:justify-start gap-2">
         <Button variant="outline" size="sm" onClick={handleSubmit}>
           Apply Filters
+        </Button>
+        <Button variant="ghost" size="sm" onClick={handleClearFilters}>
+          Clear Filters
         </Button>
       </div>
 
       {/* Entity Selection */}
       <div className="w-full sm:w-auto">
-        {" "}
-        {/* Added wrapper div for width control */}
-        <Select onValueChange={(value) => handleSelectChange("localLc", value)}>
+        <Select
+          onValueChange={(value) => handleSelectChange("localLc", value)}
+          value={filterValues.localLc}
+        >
           <SelectTrigger className="w-full sm:w-48">
             <SelectValue placeholder="Local Entity" />
           </SelectTrigger>
@@ -240,8 +336,8 @@ export default function DashboardFilters({
             <SelectItem value="KANDY">Kandy</SelectItem>
             <SelectItem value="NIBM">NIBM</SelectItem>
             <SelectItem value="NSBM">NSBM</SelectItem>
-            <SelectItem value="RAJARATA">Rajarata</SelectItem>
-            <SelectItem value="RUHUNA">Ruhuna</SelectItem>
+            <SelectItem value="RAJARATA">RAJARATA</SelectItem>
+            <SelectItem value="RUHUNA">RUHUNA</SelectItem>
             <SelectItem value="SLIIT">SLIIT</SelectItem>
           </SelectContent>
         </Select>
@@ -260,8 +356,8 @@ export default function DashboardFilters({
         <Select
           onValueChange={(e) => {
             handleFunctionSelect(e);
-            handleFunctionNameChange(e);
           }}
+          value={selectedFunction}
         >
           <SelectTrigger className="w-full sm:w-32">
             <SelectValue placeholder="Functions" />
@@ -286,7 +382,12 @@ export default function DashboardFilters({
 
       {/* Status Selection */}
       <div className="w-full sm:w-auto">
-        <Select onValueChange={(value) => handleSelectChange("status", value)}>
+        <Select
+          onValueChange={(value) => {
+            handleSelectChange("status", value);
+          }}
+          value={filterValues.status}
+        >
           <SelectTrigger className="w-full sm:w-32">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -303,10 +404,11 @@ export default function DashboardFilters({
       {/* Project Filter */}
       {showProjectFilter && (
         <div className="w-full sm:w-auto">
-          {" "}
-          {/* Added wrapper div for width control */}
           <Select
-            onValueChange={(value) => handleSelectChange("project", value)}
+            onValueChange={(value) => {
+              handleSelectChange("project", value);
+            }}
+            value={filterValues.project}
           >
             <SelectTrigger className="w-full sm:w-32">
               <SelectValue placeholder={projectLabel} />
@@ -332,47 +434,110 @@ export default function DashboardFilters({
 
       {/* MC Selection */}
       <div className="w-full sm:w-auto">
-        {" "}
-        {/* Added wrapper div for width control */}
-        <Select
-          onValueChange={(value) => handleSelectChange("foreignMc", value)}
-        >
-          <SelectTrigger className="w-full sm:w-32">
-            <SelectValue placeholder={mcLabel} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="Pakistan">Pakistan</SelectItem>
-            <SelectItem value="Germany">Germany</SelectItem>
-            <SelectItem value="India">India</SelectItem>
-            <SelectItem value="Turkey">Turkey</SelectItem>
-          </SelectContent>
-        </Select>
+        <Popover open={McComboOpen} onOpenChange={setMcComboOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={McComboOpen}
+              className="w-[120px] justify-between font-normal text-gray-500"
+            >
+              {hostMcValue
+                ? hostMCs.find((mc) => mc.value === hostMcValue)?.label
+                : mcLabel}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              <CommandInput placeholder="Search MC..." className="h-9" />
+              <CommandList>
+                <CommandEmpty>No MC found.</CommandEmpty>
+                <CommandGroup>
+                  {hostMCs.map((mc) => (
+                    <CommandItem
+                      key={mc.value}
+                      value={mc.value}
+                      onSelect={(currentValue) => {
+                        handleSelectChange("foreignMc", currentValue);
+                        setHostMcValue(
+                          currentValue === hostMcValue ? "" : currentValue
+                        );
+                        setMcComboOpen(false);
+                      }}
+                    >
+                      {mc.label}
+                      <Check
+                        className={cn(
+                          "ml-auto",
+                          hostMcValue === mc.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* LC Selection */}
       <div className="w-full sm:w-auto">
-        {" "}
-        {/* Added wrapper div for width control */}
-        <Select
-          onValueChange={(value) => handleSelectChange("foreignLc", value)}
-        >
-          <SelectTrigger className="w-full sm:w-32">
-            <SelectValue placeholder={lcLabel} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ESKISEHIR">ESKISEHIR</SelectItem>
-            <SelectItem value="ISTANBUL ASIA">ISTANBUL ASIA</SelectItem>
-          </SelectContent>
-        </Select>
+        <Popover open={LcComboOpen} onOpenChange={setLcComboOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={LcComboOpen}
+              className="w-[120px] justify-between font-normal text-gray-500"
+            >
+              {hostLcValue
+                ? hostLCs.find((lc) => lc.value === hostLcValue)?.label
+                : lcLabel}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              <CommandInput placeholder="Search LC..." className="h-9" />
+              <CommandList>
+                <CommandEmpty>No LC found.</CommandEmpty>
+                <CommandGroup>
+                  {hostLCs.map((lc) => (
+                    <CommandItem
+                      key={lc.value}
+                      value={lc.value}
+                      onSelect={(currentValue) => {
+                        handleSelectChange("foreignLc", currentValue);
+                        setHostLcValue(
+                          currentValue === hostLcValue ? "" : currentValue
+                        );
+                        setLcComboOpen(false);
+                      }}
+                    >
+                      {lc.label}
+                      <Check
+                        className={cn(
+                          "ml-auto",
+                          hostLcValue === lc.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
       </div>
 
       {/* Duration Filter (Hidden for Global Volunteer) */}
       {product !== "volunteer" && (
         <div className="w-full sm:w-auto">
-          {" "}
-          {/* Added wrapper div for width control */}
           <Select
             onValueChange={(value) => handleSelectChange("duration", value)}
+            value={filterValues.duration}
           >
             <SelectTrigger className="w-full sm:w-32">
               <SelectValue placeholder="Duration" />
