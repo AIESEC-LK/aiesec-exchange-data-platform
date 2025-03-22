@@ -75,7 +75,9 @@ type McEntry = {
 
 export const convertMcData = (data: McData | null): McEntry[] => {
   if (!data) return [];
-  const result = Object.entries(data).map(([mc, count]) => ({ mc, count }));
+  const result = Object.entries(data)
+    .map(([mc, count]) => ({ mc, count }))
+    .sort((a, b) => b.count - a.count); // Sort by count in descending order
   return result;
 };
 
@@ -94,7 +96,9 @@ type LcEntry = {
 
 export const convertLcDataToArray = (data: LcData | null): LcEntry[] => {
   if (!data) return [];
-  const result = Object.entries(data).map(([lc, count]) => ({ lc, count }));
+  const result = Object.entries(data)
+    .map(([lc, count]) => ({ lc, count }))
+    .sort((a, b) => b.count - a.count); // Sort by count in descending order
   return result;
 };
 
@@ -115,8 +119,27 @@ export const convertEntityDataToArray = (
   data: EntityData | null
 ): EntityEntry[] => {
   if (!data) return [];
+  const entities = [
+    "COLOMBO SOUTH",
+    "COLOMBO NORTH",
+    "COLOMBO CENTRAL",
+    "KANDY",
+    "RAJARATA",
+    "RUHUNA",
+    "MC Sri Lanka",
+    "SLIIT",
+    "NSBM",
+    "NIBM",
+    "USJ",
+  ];
+  entities.forEach((entity) => {
+    if (!data[entity]) {
+      data[entity] = 0; // Add zero as count if not provided in input data
+    }
+  });
   const result = Object.entries(data).map(([entity, count]) => {
-    let shortEntity = entity;
+    let shortEntity =
+      entity.charAt(0).toUpperCase() + entity.slice(1, 3).toLowerCase();
     if (entity.toUpperCase() === "COLOMBO SOUTH") shortEntity = "CS";
     else if (entity.toUpperCase() === "COLOMBO NORTH") shortEntity = "CN";
     else if (entity.toUpperCase() === "COLOMBO CENTRAL") shortEntity = "CC";
@@ -152,7 +175,27 @@ export function convertRankingData(
   lcPplCount: Record<string, number> | null
 ): { entity: string; apl: number; ppl: number }[] {
   if (!lcCount || !lcPplCount) return [];
-
+  const allEntities = [
+    "COLOMBO SOUTH",
+    "COLOMBO NORTH",
+    "COLOMBO CENTRAL",
+    "KANDY",
+    "RAJARATA",
+    "RUHUNA",
+    "MC Sri Lanka",
+    "SLIIT",
+    "NSBM",
+    "NIBM",
+    "USJ",
+  ];
+  allEntities.forEach((entity) => {
+    if (!lcCount[entity]) {
+      lcCount[entity] = 0; // Add zero as count if not provided in input data
+    }
+    if (!lcPplCount[entity]) {
+      lcPplCount[entity] = 0; // Add zero as count if not provided in input data
+    }
+  });
   const entities = Object.keys(lcCount);
   const arr = entities.map((entity) => ({
     entity,

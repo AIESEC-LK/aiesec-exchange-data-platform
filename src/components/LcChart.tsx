@@ -68,8 +68,13 @@ export default function LcChart({
                   accessibilityLayer
                   data={chartData}
                   layout="vertical"
+                  barGap={106}
+                  barSize={32}
                   margin={{
-                    left: -20,
+                    top: 10,
+                    right: 10,
+                    bottom: 10,
+                    left: 50,
                   }}
                 >
                   <XAxis type="number" dataKey="count" hide />
@@ -79,10 +84,34 @@ export default function LcChart({
                     tickLine={false}
                     tickMargin={10}
                     axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    // Ensure all LC names are displayed
+                    tickFormatter={(value) => {
+                      if (value.includes("University")) {
+                        value = value.replace("University", "Uni");
+                      }
+                      if (value.length > 20) {
+                        value = value
+                          .split(" ")
+                          .map(
+                            (word: string, index: number) =>
+                              index === 0
+                                ? word.replace(/[^a-zA-Z]/g, "") // Keep the first word fully, remove special characters
+                                : word.replace(/[^a-zA-Z]/g, "").charAt(0) // Use acronym for subsequent words
+                          )
+                          .join("");
+                      }
+                      value = value.replace(/\([^)]*\)/g, "");
+                      return value.split(" ").join("-"); // Break LC names into separate lines
+                    }}
                   />
                   <ChartTooltip cursor={false} content={<CustomTooltip />} />
-                  <Bar dataKey="count" fill="var(--color-count)" radius={5}>
+                  <Bar
+                    dataKey="count"
+                    fill="var(--color-count)"
+                    radius={5}
+                    className="my-2"
+                    barSize={20} // Set a fixed bar size to avoid narrow bars
+                  >
                     <LabelList dataKey="count" position="right" />
                   </Bar>
                 </BarChart>
@@ -96,3 +125,4 @@ export default function LcChart({
     </Card>
   );
 }
+// Update the tickFormatter function to display the full LC name

@@ -61,17 +61,19 @@ export function McChart({
                   data={chartData}
                   layout="vertical"
                   margin={{
-                    left: -20,
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20,
                   }}
                 >
-                  <XAxis type="number" dataKey="count" hide />
+                  <XAxis type="number" dataKey="count" />
                   <YAxis
                     dataKey="mc"
                     type="category"
                     tickLine={false}
                     tickMargin={10}
                     axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
                   />
                   <ChartTooltip cursor={false} content={<CustomTooltip />} />
                   <Bar dataKey="count" fill="var(--color-count)" radius={5} />
