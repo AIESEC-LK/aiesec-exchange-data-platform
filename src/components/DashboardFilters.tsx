@@ -82,14 +82,24 @@ export default function DashboardFilters({
   setResponce,
   setFunctioName,
   setLoading,
+  setProjectInPage,
+  setStatusInPage,
 }: {
   product: string;
   setResponce: (values: any) => void;
   setFunctioName: (value: string) => void;
   setLoading: (value: boolean) => void;
+  setProjectInPage: (value: string) => void;
+  setStatusInPage: (value: string) => void;
 }) {
   const handleFunctionNameChange = (value: string) => {
     setFunctioName(value);
+  };
+  const handleprojectChange = (value: string) => {
+    setProjectInPage(value);
+  };
+  const handleStatusChange = (value: string) => {
+    setStatusInPage(value);
   };
 
   // Default values - mutable at runtime
@@ -199,6 +209,13 @@ export default function DashboardFilters({
     const formattedRequest = formatRequest(filterValues);
     console.log("Filter Values:", filterValues);
     console.log("Formatted Request:", formattedRequest);
+    handleStatusChange(formattedRequest.status);
+
+    if (product === "volunteer") {
+      handleprojectChange(formattedRequest.project);
+    } else {
+      handleprojectChange(formattedRequest.subProduct);
+    }
 
     await fetchData(formattedRequest);
   };
@@ -366,7 +383,9 @@ export default function DashboardFilters({
       {/* Status Selection */}
       <div className="w-full sm:w-auto">
         <Select
-          onValueChange={(value) => handleSelectChange("status", value)}
+          onValueChange={(value) => {
+            handleSelectChange("status", value);
+          }}
           value={filterValues.status}
         >
           <SelectTrigger className="w-full sm:w-32">
@@ -386,7 +405,9 @@ export default function DashboardFilters({
       {showProjectFilter && (
         <div className="w-full sm:w-auto">
           <Select
-            onValueChange={(value) => handleSelectChange("project", value)}
+            onValueChange={(value) => {
+              handleSelectChange("project", value);
+            }}
             value={filterValues.project}
           >
             <SelectTrigger className="w-full sm:w-32">

@@ -161,7 +161,7 @@ export function convertToRegionalData(
   if (!input) return [];
   return Object.entries(input)
     .map(([key, value]) => ({
-      region: key.replace(/\s+/g, "_"), // Replace spaces with underscores
+      region: key, // Replace spaces with underscores
       count: value,
     }))
     .sort((a, b) => b.count - a.count); // Sort by count in descending order

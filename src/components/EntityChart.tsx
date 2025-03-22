@@ -25,18 +25,32 @@ interface EntityData {
 interface EntityChartProps {
   apiUrl?: string; // Optional API URL prop
   inputData?: EntityData[]; // Optional input data prop, for static data or overrides
-  title?: string; // Optional title prop
+  status?: string; // Optional title prop
+  project?: string; // Optional title prop
+  product: string;
 }
 
 export function EntityChart({
   apiUrl,
   inputData: propInputData,
-  title = "Applications By Selected Project", // Default title
+  status = "applied",
+  project = "all projects",
+  product,
 }: EntityChartProps) {
   const [chartData, setChartData] = useState<EntityData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const title = `${
+    status === ""
+      ? "Applications"
+      : status === "applied"
+      ? "Applications"
+      : status.charAt(0).toUpperCase() + status.slice(1)
+  } by entity for ${
+    project === ""
+      ? `All ${product === "volunteer" ? "projects" : "workfields"}`
+      : project
+  }`;
   const colors = [
     "hsl(210, 100%, 36%)",
     "hsl(120, 100%, 36%)",

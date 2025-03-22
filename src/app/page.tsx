@@ -140,6 +140,9 @@ export default function Home() {
     );
   }, [responce]);
 
+  const [project, setProject] = useState<string>("all projects");
+  const [status, setStatus] = useState<string>("applied");
+
   return (
     <div className="p-6 space-y-6 bg-gray-100 min-h-screen">
       {/* Dashboard Header */}
@@ -150,6 +153,8 @@ export default function Home() {
       {/* Filters Section */}
       <DashboardFilters
         product={product}
+        setProjectInPage={setProject}
+        setStatusInPage={setStatus}
         setResponce={setResponce}
         setFunctioName={setFunctionName}
         setLoading={setLoading}
@@ -177,7 +182,12 @@ export default function Home() {
               <RegionalPieChart chartInput={regionalChartData} />
             </div>
             <div className="flex flex-col p-4 rounded-lg h-full">
-              <EntityChart inputData={entityChartData} />
+              <EntityChart
+                inputData={entityChartData}
+                status={status}
+                project={project}
+                product={product}
+              />
             </div>
           </div>
 
@@ -187,7 +197,11 @@ export default function Home() {
               <FunnelChart stages={funnelStages} />
             </div>
             <div className="bg-white p-4 rounded-lg shadow-md h-full">
-              <LcChart chartData={lcChartData} />
+              <LcChart
+                chartData={lcChartData}
+                project={project}
+                product={product}
+              />
             </div>
           </div>
 
@@ -197,7 +211,11 @@ export default function Home() {
               <RatioTable data={ratioTableData} />
             </div>
             <div className="bg-white p-4 rounded-lg shadow-md h-full">
-              <McChart chartData={mcChartData} />
+              <McChart
+                chartData={mcChartData}
+                project={project}
+                product={product}
+              />
             </div>
           </div>
         </div>
