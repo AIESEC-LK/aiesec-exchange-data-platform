@@ -246,12 +246,14 @@ export default function DashboardFilters({
     handleSelectChange("product", value);
   };
 
-  const showProjectFilter = product === "volunteer"; // Show Project/Workfield only for volunteer
+  const showProjectFilter = product === "volunteer";
+  const showWorkfieldFilter = product === "talent/teacher";
+
   const isInternal = ["iGV", "iGTa", "iGTe"].includes(selectedFunction || "");
   const isTalentTeacher = product === "talent/teacher";
   const mcLabel = isInternal ? "Home MC" : "Host MC";
   const lcLabel = isInternal ? "Home LC" : "Host LC";
-  const projectLabel = isTalentTeacher ? "Workfield" : "Project";
+  const projectLabel = isTalentTeacher ? "Workfield" : "Project"; // projectLabel is still used for placeholder
 
   const handleDateRangeChange = (newDateRange: DateRange | undefined) => {
     setDateRange(newDateRange);
@@ -453,7 +455,7 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {showProjectFilter && ( // Conditionally render based on showProjectFilter
+      {showProjectFilter && (
         <div className="w-full sm:w-auto">
           <Select
             onValueChange={(value) => handleSelectChange("project", value)}
@@ -463,19 +465,31 @@ export default function DashboardFilters({
               <SelectValue placeholder={projectLabel} />
             </SelectTrigger>
             <SelectContent>
-              {product === "volunteer" // Render gv_projects for volunteer
-                ? gv_projects.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      {p}
-                    </SelectItem>
-                  ))
-                : product === "talent/teacher" // Render t_projects for talent/teacher
-                ? t_projects.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      {p}
-                    </SelectItem>
-                  ))
-                : null}
+              {gv_projects.map((p) => (
+                <SelectItem key={p} value={p}>
+                  {p}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {showWorkfieldFilter && (
+        <div className="w-full sm:w-auto">
+          <Select
+            onValueChange={(value) => handleSelectChange("project", value)}
+            value={filterValues.project}
+          >
+            <SelectTrigger className="w-full sm:w-32">
+              <SelectValue placeholder={projectLabel} />
+            </SelectTrigger>
+            <SelectContent>
+              {t_projects.map((p) => (
+                <SelectItem key={p} value={p}>
+                  {p}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
