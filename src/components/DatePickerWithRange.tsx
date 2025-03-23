@@ -67,7 +67,7 @@ const PRESET_RANGES: { label: string; range: DateRange }[] = [
   { label: "Today", range: getToday() },
   { label: "Last Week", range: getLastWeek() },
   { label: "Last Month", range: getLastMonth() },
-  { label: "This Month", range: getThisMonth() }, // "This Month" option is here
+  { label: "This Month", range: getThisMonth() },
   { label: "This LC Term", range: getThisLCTerm() },
   { label: "Last LC Term", range: getLastLCTerm() },
   { label: "This MC Term", range: getThisMCTerm() },
@@ -145,7 +145,9 @@ export function DatePickerWithRange({
           </div>
 
           {tab === "preset" ? (
-            <ScrollArea className="max-h-[250px] p-2">
+            <ScrollArea className="max-h-[300px] p-2">
+              {" "}
+              {/* Increased max-h to 300px */}
               {PRESET_RANGES.map((preset) => (
                 <Button
                   key={preset.label}

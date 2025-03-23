@@ -246,7 +246,7 @@ export default function DashboardFilters({
     handleSelectChange("product", value);
   };
 
-  const showProjectFilter = product === "talent/teacher"; // Show Project/Workfield only for talent/teacher
+  const showProjectFilter = product === "volunteer"; // Show Project/Workfield only for volunteer
   const isInternal = ["iGV", "iGTa", "iGTe"].includes(selectedFunction || "");
   const isTalentTeacher = product === "talent/teacher";
   const mcLabel = isInternal ? "Home MC" : "Host MC";
@@ -463,14 +463,19 @@ export default function DashboardFilters({
               <SelectValue placeholder={projectLabel} />
             </SelectTrigger>
             <SelectContent>
-              {product === "talent/teacher" // Render t_projects for talent/teacher
+              {product === "volunteer" // Render gv_projects for volunteer
+                ? gv_projects.map((p) => (
+                    <SelectItem key={p} value={p}>
+                      {p}
+                    </SelectItem>
+                  ))
+                : product === "talent/teacher" // Render t_projects for talent/teacher
                 ? t_projects.map((p) => (
                     <SelectItem key={p} value={p}>
                       {p}
                     </SelectItem>
                   ))
-                : null}{" "}
-              {/* Don't render for volunteer, based on showProjectFilter now */}
+                : null}
             </SelectContent>
           </Select>
         </div>
