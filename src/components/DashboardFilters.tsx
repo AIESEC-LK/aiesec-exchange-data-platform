@@ -32,11 +32,113 @@ import {
 } from "@/components/ui/popover";
 
 const hostMCs = [
-  { value: "China", label: "China" },
+  { value: "Argentina", label: "Argentina" },
+  { value: "Bolivia", label: "Bolivia" },
+  { value: "Brazil", label: "Brazil" },
+  { value: "Canada", label: "Canada" },
+  { value: "Chile", label: "Chile" },
+  { value: "Colombia", label: "Colombia" },
+  { value: "Costa Rica", label: "Costa Rica" },
+  { value: "Dominican Republic", label: "Dominican Republic" },
+  { value: "Ecuador", label: "Ecuador" },
+  { value: "El Salvador", label: "El Salvador" },
+  { value: "Guatemala", label: "Guatemala" },
+  { value: "Mexico", label: "Mexico" },
+  { value: "Nicaragua", label: "Nicaragua" },
+  { value: "Panama", label: "Panama" },
+  { value: "Paraguay", label: "Paraguay" },
+  { value: "Peru", label: "Peru" },
+  { value: "United States", label: "United States" },
+  { value: "Venezuela", label: "Venezuela" },
+  { value: "Australia", label: "Australia" },
+  { value: "Bangladesh", label: "Bangladesh" },
+  { value: "Cambodia", label: "Cambodia" },
+  { value: "Mainland of China", label: "Mainland of China" },
+  { value: "Hong Kong", label: "Hong Kong" },
   { value: "India", label: "India" },
   { value: "Indonesia", label: "Indonesia" },
+  { value: "Japan", label: "Japan" },
   { value: "Malaysia", label: "Malaysia" },
+  { value: "Mongolia", label: "Mongolia" },
+  { value: "Myanmar", label: "Myanmar" },
+  { value: "Nepal", label: "Nepal" },
+  { value: "New Zealand", label: "New Zealand" },
+  { value: "Pakistan", label: "Pakistan" },
+  { value: "Philippines", label: "Philippines" },
+  { value: "Singapore", label: "Singapore" },
+  { value: "Korea", label: "Korea" },
+  { value: "Sri Lanka", label: "Sri Lanka" },
+  { value: "Taiwan", label: "Taiwan" },
+  { value: "Thailand", label: "Thailand" },
+  { value: "Vietnam", label: "Vietnam" },
+  { value: "Albania", label: "Albania" },
+  { value: "Armenia", label: "Armenia" },
+  { value: "Austria", label: "Austria" },
+  { value: "Azerbaijan", label: "Azerbaijan" },
+  { value: "Belgium", label: "Belgium" },
+  { value: "Bosnia and Herzegovina", label: "Bosnia and Herzegovina" },
+  { value: "Bulgaria", label: "Bulgaria" },
+  { value: "Croatia", label: "Croatia" },
+  { value: "Czech Republic", label: "Czech Republic" },
+  { value: "Denmark", label: "Denmark" },
+  { value: "Estonia", label: "Estonia" },
+  { value: "Finland", label: "Finland" },
+  { value: "France", label: "France" },
+  { value: "Georgia", label: "Georgia" },
+  { value: "Germany", label: "Germany" },
+  { value: "Greece", label: "Greece" },
+  { value: "Hungary", label: "Hungary" },
+  { value: "Iceland", label: "Iceland" },
+  { value: "Italy", label: "Italy" },
+  { value: "Kazakhstan", label: "Kazakhstan" },
+  { value: "Kyrgyzstan", label: "Kyrgyzstan" },
+  { value: "Latvia", label: "Latvia" },
+  { value: "Lithuania", label: "Lithuania" },
+  { value: "Macedonia", label: "Macedonia" },
+  { value: "Moldova", label: "Moldova" },
+  { value: "Montenegro", label: "Montenegro" },
+  { value: "Norway", label: "Norway" },
+  { value: "Poland", label: "Poland" },
+  { value: "Portugal", label: "Portugal" },
+  { value: "Romania", label: "Romania" },
+  { value: "Russia", label: "Russia" },
+  { value: "Serbia", label: "Serbia" },
+  { value: "Slovakia", label: "Slovakia" },
+  { value: "Spain", label: "Spain" },
+  { value: "Sweden", label: "Sweden" },
+  { value: "Switzerland", label: "Switzerland" },
+  { value: "The Netherlands", label: "The Netherlands" },
+  { value: "Türkiye", label: "Türkiye" },
   { value: "Ukraine", label: "Ukraine" },
+  { value: "United Kingdom", label: "United Kingdom" },
+  { value: "Algeria", label: "Algeria" },
+  { value: "Bahrain", label: "Bahrain" },
+  { value: "Benin", label: "Benin" },
+  { value: "Burkina Faso", label: "Burkina Faso" },
+  { value: "Cabo Verde", label: "Cabo Verde" },
+  { value: "Cameroon", label: "Cameroon" },
+  { value: "Cote D'Ivoire", label: "Cote D'Ivoire" },
+  { value: "Egypt", label: "Egypt" },
+  { value: "Ethiopia", label: "Ethiopia" },
+  { value: "Ghana", label: "Ghana" },
+  { value: "Jordan", label: "Jordan" },
+  { value: "Kenya", label: "Kenya" },
+  { value: "Kuwait", label: "Kuwait" },
+  { value: "Lebanon", label: "Lebanon" },
+  { value: "Liberia", label: "Liberia" },
+  { value: "Malawi", label: "Malawi" },
+  { value: "Morocco", label: "Morocco" },
+  { value: "Mozambique", label: "Mozambique" },
+  { value: "Namibia", label: "Namibia" },
+  { value: "Nigeria", label: "Nigeria" },
+  { value: "Rwanda", label: "Rwanda" },
+  { value: "Senegal", label: "Senegal" },
+  { value: "South Africa", label: "South Africa" },
+  { value: "Tanzania", label: "Tanzania" },
+  { value: "Togo", label: "Togo" },
+  { value: "Tunisia", label: "Tunisia" },
+  { value: "Uganda", label: "Uganda" },
+  { value: "United Arab Emirates", label: "United Arab Emirates" },
 ];
 
 const hostLCs = [
@@ -64,10 +166,11 @@ export default function DashboardFilters({
     setFunctioName(value);
   };
 
-  const defaultFunctionName = "iGV";
+  const defaultFunctionName_v = "iGV";
+  const defaultFunctionName_t = "iGTe";
   const defaultLcTermStartDate = new Date(2025, 1, 1);
 
-  const defaultFilterValues = {
+  const getDefaultFilterValues = (defaultFunctionName: string) => ({
     localLc: "",
     from: defaultLcTermStartDate.toISOString().split("T")[0],
     to: new Date().toISOString().split("T")[0],
@@ -77,7 +180,7 @@ export default function DashboardFilters({
     status: "",
     project: "",
     duration: "",
-  };
+  });
 
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
     from: defaultLcTermStartDate,
@@ -85,8 +188,16 @@ export default function DashboardFilters({
   });
   const [selectedFunction, setSelectedFunction] = React.useState<
     string | undefined
-  >(defaultFunctionName);
-  const [filterValues, setFilterValues] = React.useState(defaultFilterValues);
+  >(
+    product === "talent/teacher" ? defaultFunctionName_t : defaultFunctionName_v
+  );
+  const [filterValues, setFilterValues] = React.useState(
+    getDefaultFilterValues(
+      product === "talent/teacher"
+        ? defaultFunctionName_t
+        : defaultFunctionName_v
+    )
+  );
   const [McComboOpen, setMcComboOpen] = React.useState(false);
   const [LcComboOpen, setLcComboOpen] = React.useState(false);
   const [hostMcValue, setHostMcValue] = React.useState("");
@@ -97,12 +208,15 @@ export default function DashboardFilters({
   const v_products = ["oGV", "iGV"];
 
   const t_projects = [
+    "Education",
+    "Sales & Business Development",
+    "Business Administration",
     "Information Technology",
-    "Engineering",
-    "Business Developement",
     "Marketing",
-    "Teaching",
+    "Engineering",
     "Other",
+    "Finance",
+    "Business Development",
   ];
 
   const gv_projects = [
@@ -132,9 +246,7 @@ export default function DashboardFilters({
     handleSelectChange("product", value);
   };
 
-  const showProjectFilter = !(
-    selectedFunction === "iGTe" || selectedFunction === "oGTe"
-  );
+  const showProjectFilter = product === "talent/teacher"; // Show Project/Workfield only for talent/teacher
   const isInternal = ["iGV", "iGTa", "iGTe"].includes(selectedFunction || "");
   const isTalentTeacher = product === "talent/teacher";
   const mcLabel = isInternal ? "Home MC" : "Host MC";
@@ -172,10 +284,14 @@ export default function DashboardFilters({
   };
 
   const handleClearFilters = () => {
-    setFilterValues(defaultFilterValues);
+    const defaultFuncName =
+      product === "talent/teacher"
+        ? defaultFunctionName_t
+        : defaultFunctionName_v;
+    setFilterValues(getDefaultFilterValues(defaultFuncName));
     setDateRange({ from: defaultLcTermStartDate, to: new Date() });
-    setSelectedFunction(undefined);
-    setFunctioName(defaultFunctionName);
+    setSelectedFunction(undefined); // Set to undefined to show placeholder
+    setFunctioName(defaultFuncName);
     setHostMcValue("");
     setHostLcValue("");
     setSelectedStatus(null);
@@ -237,13 +353,21 @@ export default function DashboardFilters({
   };
 
   React.useEffect(() => {
-    const initialRequest = formatRequest(defaultFilterValues);
+    let defaultFuncName = defaultFunctionName_v;
+    if (product === "talent/teacher") {
+      defaultFuncName = defaultFunctionName_t;
+      setSelectedFunction(defaultFunctionName_t);
+    } else {
+      setSelectedFunction(defaultFunctionName_v);
+    }
+    const initialRequest = formatRequest(
+      getDefaultFilterValues(defaultFuncName)
+    );
     fetchData(initialRequest);
-    setFunctioName(defaultFunctionName);
-    setFilterValues(defaultFilterValues);
+    setFunctioName(defaultFuncName);
+    setFilterValues(getDefaultFilterValues(defaultFuncName));
     setDateRange({ from: defaultLcTermStartDate, to: new Date() });
-    setSelectedFunction(defaultFunctionName);
-  }, []);
+  }, [product]); // React to product changes
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
@@ -329,7 +453,7 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {showProjectFilter && (
+      {showProjectFilter && ( // Conditionally render based on showProjectFilter
         <div className="w-full sm:w-auto">
           <Select
             onValueChange={(value) => handleSelectChange("project", value)}
@@ -339,19 +463,14 @@ export default function DashboardFilters({
               <SelectValue placeholder={projectLabel} />
             </SelectTrigger>
             <SelectContent>
-              {product === "volunteer"
-                ? gv_projects.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      {p}
-                    </SelectItem>
-                  ))
-                : product === "talent/teacher"
+              {product === "talent/teacher" // Render t_projects for talent/teacher
                 ? t_projects.map((p) => (
                     <SelectItem key={p} value={p}>
                       {p}
                     </SelectItem>
                   ))
-                : null}
+                : null}{" "}
+              {/* Don't render for volunteer, based on showProjectFilter now */}
             </SelectContent>
           </Select>
         </div>
