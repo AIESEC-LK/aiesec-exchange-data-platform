@@ -13,9 +13,13 @@ import {
 export default function Navbar({
   product,
   setProduct,
+  setProjectInPage,
+  setStatusInPage,
 }: {
   product: string;
   setProduct: (value: string) => void;
+  setProjectInPage: (value: string) => void;
+  setStatusInPage: (value: string) => void;
 }) {
   // Define a callback function for handling product changes
   const handleProductChange = useCallback(
@@ -26,6 +30,14 @@ export default function Navbar({
     },
     [product, setProduct]
   ); // useCallback with dependency array ensures the function instance is stable
+
+  const handleProjectChange = (value: string) => {
+    setProjectInPage(value);
+  };
+
+  const handleStatusChange = (value: string) => {
+    setStatusInPage(value);
+  };
 
   return (
     <nav className="p-4" style={{ backgroundColor: "" }}>
@@ -44,7 +56,14 @@ export default function Navbar({
         <div className="hidden md:block flex-1"></div>
         {/* Product Selection Dropdown - Bottom on Mobile, Left on Desktop */}
         <div className="w-full md:w-auto flex justify-center md:justify-start">
-          <Select onValueChange={(e) => handleProductChange(e)} value={product}>
+          <Select
+            onValueChange={(e) => {
+              handleProductChange(e);
+              handleProjectChange("");
+              handleStatusChange("");
+            }}
+            value={product}
+          >
             <SelectTrigger className="w-full md:w-[220px] bg-white text-black">
               <SelectValue placeholder="Select Product" />
             </SelectTrigger>

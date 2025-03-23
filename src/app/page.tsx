@@ -147,7 +147,12 @@ export default function Home() {
     <div className="p-6 space-y-6 bg-gray-100 min-h-screen">
       {/* Dashboard Header */}
       <div className="bg-blue-600 text-black py-4 px-6 rounded-md shadow-md text-center">
-        <Navbar setProduct={handleSetProduct} product={product} />
+        <Navbar
+          setProduct={handleSetProduct}
+          product={product}
+          setProjectInPage={setProject}
+          setStatusInPage={setStatus}
+        />
       </div>
 
       {/* Filters Section */}
