@@ -36,14 +36,14 @@ export const RegionalPieChart = ({
 
   function getColorForRegion(region: string): string {
     switch (region) {
-      case "Asia_Pacific":
-        return "#343a40";
+      case "Asia Pacific":
+        return "#037ef3";
       case "Europe":
-        return "#007bff";
-      case "Middle_East_Africa":
-        return "#28a745";
+        return "#f48924";
+      case "Middle East Africa":
+        return "#00c16e";
       case "Americas":
-        return "#dc3545";
+        return "#7552cc";
       default:
         return "#000000";
     }

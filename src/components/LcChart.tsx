@@ -51,19 +51,31 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 
 export default function LcChart({
   chartData,
+  project,
+  product,
 }: {
   chartData: { lc: string; count: number }[];
+  project: string;
+  product: string;
 }) {
   return (
     <Card className="h-[500px]">
       <CardHeader>
-        <CardTitle>LC Breakdown by selected Project</CardTitle>
+        <CardTitle>
+          LC Breakdown for{" "}
+          {project === ""
+            ? `All ${product === "volunteer" ? "projects" : "workfields"}`
+            : project}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {chartData.length > 0 ? (
           <ChartContainer config={chartConfig}>
             <div style={{ height: 400, overflowY: "auto" }}>
-              <ResponsiveContainer width="100%" height={chartData.length * 30}>
+              <ResponsiveContainer
+                width="100%"
+                height={Math.max(chartData.length * 30, 200)}
+              >
                 <BarChart
                   accessibilityLayer
                   data={chartData}
