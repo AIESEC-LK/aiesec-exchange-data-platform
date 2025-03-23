@@ -28,8 +28,8 @@ import LoadingComponent from "@/components/LoadingComponent";
 export default function Home() {
   const [responce, setResponce] = useState<any>({});
   const [functionName, setFunctionName] = useState<string>("iGV");
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null); // ✅ ADDED
 
-  // Sample data for FunnelChart
   const [product, setProduct] = useState<string>("volunteer");
   const handleSetProduct = useCallback((value: string) => {
     setProduct(value);
@@ -43,13 +43,13 @@ export default function Home() {
   const [regionalChartData, setRegionalChartData] = useState<any>([]);
   const [rankingData, setRankingData] = useState<any>([]);
   const [statsData, setStatsData] = useState<any>([]);
-
   const [loading, setLoading] = useState<boolean>(false);
+
   React.useEffect(() => {
     setFunnelStages(
       convertToStageArray(responce?.applicationResponce?.funnelCounts)
     );
-    console.log("Funnel Stages", funnelStages);
+
     const inComingRatioTableData = converToRatioTableData(
       responce?.applicationResponce?.homeMcApprovedCount,
       responce?.applicationResponce?.homeMcCount,
@@ -83,11 +83,11 @@ export default function Home() {
       responce?.responce?.hostLcCount ??
         responce?.applicationResponce?.hostLcCount
     );
-
     const outGoingEntityChartData = convertEntityDataToArray(
       responce?.responce?.homeLcCount ??
         responce?.applicationResponce?.homeLcCount
     );
+
     const incomingRegionalChartData = convertToRegionalData(
       responce?.responce?.homeRegionalCount ??
         responce?.applicationResponce?.homeRegionalCount
@@ -105,7 +105,9 @@ export default function Home() {
       responce?.applicationResponce?.homeLcCount,
       responce?.applicationResponce?.homeLcPplCount
     );
+
     setStatsData(convertToStatsData(responce?.appCounts));
+
     setRankingData(
       (functionName.startsWith("i")
         ? incomingRankingData
@@ -127,7 +129,6 @@ export default function Home() {
         ? incomingMcChartData
         : outGoingMcChartData) || []
     );
-
     setEntityChartData(
       (functionName.startsWith("i")
         ? incomingEntityChartData
@@ -158,22 +159,24 @@ export default function Home() {
         setResponce={setResponce}
         setFunctioName={setFunctionName}
         setLoading={setLoading}
+        setSelectedStatus={setSelectedStatus} // ✅ ADDED
       />
+
       {loading ? (
         <LoadingComponent />
       ) : (
         <div>
           {/* Entity Stats Section */}
           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-            {" "}
-            {/* Responsive full width */}
             <div className="bg-white p-4 rounded-lg shadow-md h-full">
-              <EntityStats statData={statsData} />{" "}
-              {/* Passing data to EntityStats */}
+              <EntityStats
+                statData={statsData}
+                selectedStatus={selectedStatus} // ✅ ADDED
+              />
             </div>
           </div>
 
-          {/* First Row: Entity Ranking + Pie Chart + Entity Chart*/}
+          {/* First Row: Entity Ranking + Pie Chart + Entity Chart */}
           <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex flex-col p-4 rounded-lg h-full">
               <EntityRanking rankingData={rankingData} />
