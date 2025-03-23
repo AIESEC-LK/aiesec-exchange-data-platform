@@ -45,6 +45,14 @@ export function EntityChart({
       ? "Applications"
       : status === "applied"
       ? "Applications"
+      : status === "accepted"
+      ? "Acceptances"
+      : status === "approved"
+      ? "Approvals"
+      : status === "realized"
+      ? "Realizations"
+      : status === "completed"
+      ? "Completions"
       : status.charAt(0).toUpperCase() + status.slice(1)
   } by entity for ${
     project === ""
