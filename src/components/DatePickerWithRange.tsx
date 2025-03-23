@@ -2,7 +2,14 @@
 
 import React, { useState } from "react";
 import { CalendarIcon } from "lucide-react";
-import { format, subDays, startOfMonth, endOfMonth } from "date-fns";
+import {
+  format,
+  subDays,
+  startOfMonth,
+  endOfMonth,
+  startOfToday,
+  endOfToday,
+} from "date-fns";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -37,8 +44,8 @@ const getLastMCTerm = (): DateRange => ({
 });
 
 const getToday = (): DateRange => ({
-  from: new Date(),
-  to: new Date(),
+  from: startOfToday(),
+  to: endOfToday(),
 });
 
 const getLastWeek = (): DateRange => ({
@@ -51,10 +58,16 @@ const getLastMonth = (): DateRange => ({
   to: endOfMonth(subDays(new Date(), 30)),
 });
 
+const getThisMonth = (): DateRange => ({
+  from: startOfMonth(new Date()),
+  to: endOfMonth(new Date()),
+});
+
 const PRESET_RANGES: { label: string; range: DateRange }[] = [
   { label: "Today", range: getToday() },
   { label: "Last Week", range: getLastWeek() },
   { label: "Last Month", range: getLastMonth() },
+  { label: "This Month", range: getThisMonth() }, // "This Month" option is here
   { label: "This LC Term", range: getThisLCTerm() },
   { label: "Last LC Term", range: getLastLCTerm() },
   { label: "This MC Term", range: getThisMCTerm() },
