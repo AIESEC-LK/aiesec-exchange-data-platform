@@ -203,13 +203,13 @@ export default function DashboardFilters({
     from: defaultLcTermStartDate,
     to: new Date(),
   });
-  
+
   const [selectedFunction, setSelectedFunction] = React.useState<
     string | undefined
   >(
     product === "talent/teacher" ? defaultFunctionName_t : defaultFunctionName_v
   );
-  
+
   const [filterValues, setFilterValues] = React.useState(
     getDefaultFilterValues(
       product === "talent/teacher"
@@ -217,7 +217,7 @@ export default function DashboardFilters({
         : defaultFunctionName_v
     )
   );
-  
+
   const [McComboOpen, setMcComboOpen] = React.useState(false);
   const [LcComboOpen, setLcComboOpen] = React.useState(false);
   const [hostMcValue, setHostMcValue] = React.useState("");
@@ -283,14 +283,6 @@ export default function DashboardFilters({
 
   const handleSelectChange = (name: string, value: string) => {
     setFilterValues((prev: any) => ({ ...prev, [name]: value }));
-    if (name === "status") {
-      handleStatusChange(value);
-    }
-    if (name === "project" && product === "volunteer") {
-      handleProjectChange(value);
-    } else if (name === "project" && product === "talent/teacher") {
-      handleProjectChange(value);
-    }
   };
 
   const handleDateChange = (range: DateRange | undefined) => {
@@ -307,7 +299,7 @@ export default function DashboardFilters({
     const formattedRequest = formatRequest(filterValues);
     console.log("Filter Values:", filterValues);
     console.log("Formatted Request:", formattedRequest);
-    
+
     // Update status and project in parent components
     handleStatusChange(formattedRequest.status);
     if (product === "volunteer") {
@@ -315,7 +307,7 @@ export default function DashboardFilters({
     } else if (product === "talent/teacher") {
       handleProjectChange(formattedRequest.subProduct);
     }
-    
+
     await fetchData(formattedRequest);
   };
 
@@ -324,14 +316,14 @@ export default function DashboardFilters({
       product === "talent/teacher"
         ? defaultFunctionName_t
         : defaultFunctionName_v;
-    
+
     setFilterValues(getDefaultFilterValues(defaultFuncName));
     setDateRange({ from: defaultLcTermStartDate, to: new Date() });
     setSelectedFunction(defaultFuncName);
     setFunctioName(defaultFuncName);
     setHostMcValue("");
     setHostLcValue("");
-    
+
     if (setSelectedStatus) {
       setSelectedStatus(null);
     }
@@ -408,11 +400,11 @@ export default function DashboardFilters({
     } else {
       setSelectedFunction(defaultFunctionName_v);
     }
-    
+
     const initialRequest = formatRequest(
       getDefaultFilterValues(defaultFuncName)
     );
-    
+
     console.log("Initial Default Request:", initialRequest);
     fetchData(initialRequest);
     setFunctioName(defaultFuncName);
