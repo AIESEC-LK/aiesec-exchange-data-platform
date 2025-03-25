@@ -54,7 +54,7 @@ export function EntityChart({
       : status === "completed"
       ? "Completions"
       : status.charAt(0).toUpperCase() + status.slice(1)
-  } by entity for ${
+  } by Entity for ${
     project === ""
       ? `All ${product === "volunteer" ? "projects" : "workfields"}`
       : project

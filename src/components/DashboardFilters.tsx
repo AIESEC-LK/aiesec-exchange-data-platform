@@ -10,12 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "./DatePickerWithRange";
-
 import { Check, ChevronsUpDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -155,17 +152,37 @@ export default function DashboardFilters({
   setFunctioName,
   setLoading,
   setSelectedStatus,
+  setProjectInPage,
+  setStatusInPage,
 }: {
   product: string;
   setResponce: (values: any) => void;
   setFunctioName: (value: string) => void;
   setLoading: (value: boolean) => void;
-  setSelectedStatus: (value: string | null) => void;
+  setSelectedStatus?: (value: string | null) => void;
+  setProjectInPage?: (value: string) => void;
+  setStatusInPage?: (value: string) => void;
 }) {
   const handleFunctionNameChange = (value: string) => {
     setFunctioName(value);
   };
 
+  const handleProjectChange = (value: string) => {
+    if (setProjectInPage) {
+      setProjectInPage(value);
+    }
+  };
+
+  const handleStatusChange = (value: string) => {
+    if (setStatusInPage) {
+      setStatusInPage(value);
+    }
+    if (setSelectedStatus) {
+      setSelectedStatus(value || null);
+    }
+  };
+
+  // Default values
   const defaultFunctionName_v = "iGV";
   const defaultFunctionName_t = "iGTe";
   const defaultLcTermStartDate = new Date(2025, 1, 1);
@@ -186,11 +203,13 @@ export default function DashboardFilters({
     from: defaultLcTermStartDate,
     to: new Date(),
   });
+  
   const [selectedFunction, setSelectedFunction] = React.useState<
     string | undefined
   >(
     product === "talent/teacher" ? defaultFunctionName_t : defaultFunctionName_v
   );
+  
   const [filterValues, setFilterValues] = React.useState(
     getDefaultFilterValues(
       product === "talent/teacher"
@@ -198,6 +217,7 @@ export default function DashboardFilters({
         : defaultFunctionName_v
     )
   );
+  
   const [McComboOpen, setMcComboOpen] = React.useState(false);
   const [LcComboOpen, setLcComboOpen] = React.useState(false);
   const [hostMcValue, setHostMcValue] = React.useState("");
@@ -253,7 +273,7 @@ export default function DashboardFilters({
   const isTalentTeacher = product === "talent/teacher";
   const mcLabel = isInternal ? "Home MC" : "Host MC";
   const lcLabel = isInternal ? "Home LC" : "Host LC";
-  const projectLabel = isTalentTeacher ? "Workfield" : "Project"; // projectLabel is still used for placeholder
+  const projectLabel = isTalentTeacher ? "Workfield" : "Project";
 
   const handleDateRangeChange = (newDateRange: DateRange | undefined) => {
     setDateRange(newDateRange);
@@ -264,7 +284,12 @@ export default function DashboardFilters({
   const handleSelectChange = (name: string, value: string) => {
     setFilterValues((prev: any) => ({ ...prev, [name]: value }));
     if (name === "status") {
-      setSelectedStatus(value);
+      handleStatusChange(value);
+    }
+    if (name === "project" && product === "volunteer") {
+      handleProjectChange(value);
+    } else if (name === "project" && product === "talent/teacher") {
+      handleProjectChange(value);
     }
   };
 
@@ -282,6 +307,15 @@ export default function DashboardFilters({
     const formattedRequest = formatRequest(filterValues);
     console.log("Filter Values:", filterValues);
     console.log("Formatted Request:", formattedRequest);
+    
+    // Update status and project in parent components
+    handleStatusChange(formattedRequest.status);
+    if (product === "volunteer") {
+      handleProjectChange(formattedRequest.project);
+    } else if (product === "talent/teacher") {
+      handleProjectChange(formattedRequest.subProduct);
+    }
+    
     await fetchData(formattedRequest);
   };
 
@@ -290,13 +324,23 @@ export default function DashboardFilters({
       product === "talent/teacher"
         ? defaultFunctionName_t
         : defaultFunctionName_v;
+    
     setFilterValues(getDefaultFilterValues(defaultFuncName));
     setDateRange({ from: defaultLcTermStartDate, to: new Date() });
-    setSelectedFunction(undefined); // Set to undefined to show placeholder
+    setSelectedFunction(defaultFuncName);
     setFunctioName(defaultFuncName);
     setHostMcValue("");
     setHostLcValue("");
-    setSelectedStatus(null);
+    
+    if (setSelectedStatus) {
+      setSelectedStatus(null);
+    }
+    if (setStatusInPage) {
+      setStatusInPage("");
+    }
+    if (setProjectInPage) {
+      setProjectInPage("");
+    }
   };
 
   function formatRequest(filterValues: any) {
@@ -346,11 +390,13 @@ export default function DashboardFilters({
       });
       if (!response.ok) throw new Error("Failed to fetch data");
       const responseData = await response.json();
+      console.log("Fetched Data:", responseData);
       setResponce(responseData);
     } catch (err) {
       console.error("Fetch Error:", err);
     } finally {
       setLoading(false);
+      console.log("Data fetch operation completed.");
     }
   };
 
@@ -362,9 +408,12 @@ export default function DashboardFilters({
     } else {
       setSelectedFunction(defaultFunctionName_v);
     }
+    
     const initialRequest = formatRequest(
       getDefaultFilterValues(defaultFuncName)
     );
+    
+    console.log("Initial Default Request:", initialRequest);
     fetchData(initialRequest);
     setFunctioName(defaultFuncName);
     setFilterValues(getDefaultFilterValues(defaultFuncName));
@@ -373,6 +422,7 @@ export default function DashboardFilters({
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
+      {/* Apply and Clear Filters Buttons */}
       <div className="w-full sm:w-auto flex justify-center sm:justify-start gap-2">
         <Button variant="outline" size="sm" onClick={handleSubmit}>
           Apply Filters
@@ -382,6 +432,7 @@ export default function DashboardFilters({
         </Button>
       </div>
 
+      {/* Entity Selection */}
       <div className="w-full sm:w-auto">
         <Select
           onValueChange={(value) => handleSelectChange("localLc", value)}
@@ -404,6 +455,7 @@ export default function DashboardFilters({
         </Select>
       </div>
 
+      {/* Date Picker */}
       <div className="w-full sm:w-auto">
         <DatePickerWithRange
           value={dateRange}
@@ -411,6 +463,7 @@ export default function DashboardFilters({
         />
       </div>
 
+      {/* Functions Selection */}
       <div className="w-full sm:w-auto">
         <Select
           onValueChange={(e) => handleFunctionSelect(e)}
@@ -437,6 +490,7 @@ export default function DashboardFilters({
         </Select>
       </div>
 
+      {/* Status Selection */}
       <div className="w-full sm:w-auto">
         <Select
           onValueChange={(value) => {
@@ -457,6 +511,7 @@ export default function DashboardFilters({
         </Select>
       </div>
 
+      {/* Project Filter for Volunteer */}
       {showProjectFilter && (
         <div className="w-full sm:w-auto">
           <Select
@@ -479,26 +534,7 @@ export default function DashboardFilters({
         </div>
       )}
 
-      {showWorkfieldFilter && (
-        <div className="w-full sm:w-auto">
-          <Select
-            onValueChange={(value) => handleSelectChange("project", value)}
-            value={filterValues.project}
-          >
-            <SelectTrigger className="w-full sm:w-32">
-              <SelectValue placeholder={projectLabel} />
-            </SelectTrigger>
-            <SelectContent>
-              {gv_projects.map((p) => (
-                <SelectItem key={p} value={p}>
-                  {p}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-
+      {/* Workfield Filter for Talent/Teacher */}
       {showWorkfieldFilter && (
         <div className="w-full sm:w-auto">
           <Select
@@ -519,6 +555,7 @@ export default function DashboardFilters({
         </div>
       )}
 
+      {/* MC Selection */}
       <div className="w-full sm:w-auto">
         <Popover open={McComboOpen} onOpenChange={setMcComboOpen}>
           <PopoverTrigger asChild>
@@ -568,6 +605,7 @@ export default function DashboardFilters({
         </Popover>
       </div>
 
+      {/* LC Selection */}
       <div className="w-full sm:w-auto">
         <Popover open={LcComboOpen} onOpenChange={setLcComboOpen}>
           <PopoverTrigger asChild>
@@ -617,6 +655,7 @@ export default function DashboardFilters({
         </Popover>
       </div>
 
+      {/* Duration Filter (Hidden for Global Volunteer) */}
       {product !== "volunteer" && (
         <div className="w-full sm:w-auto">
           <Select
