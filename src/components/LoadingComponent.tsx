@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const LoadingComponent = () => {
-  const circleColors = ["#8B5CF6", "#60A5FA", "#EC4899"];
+  const circleColors = ["#f85a40", "#037ef3", "#00c16e"];
 
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-50 to-pink-50">

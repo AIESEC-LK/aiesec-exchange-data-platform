@@ -43,28 +43,42 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 
 export function McChart({
   chartData,
+  project,
+  product,
 }: {
   chartData: { mc: string; count: number }[];
+  project: string;
+  product: string;
 }) {
   return (
     <Card className="h-[500px]">
       <CardHeader>
-        <CardTitle>MC Breakdown by selected Project</CardTitle>
+        <CardTitle>
+          MC Breakdown for{" "}
+          {project === ""
+            ? `All ${product === "volunteer" ? "projects" : "workfields"}`
+            : project}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {chartData && chartData.length > 0 ? (
           <ChartContainer config={chartConfig}>
             <div style={{ height: 400, overflowY: "auto" }}>
-              <ResponsiveContainer width="100%" height={chartData.length * 30}>
+              <ResponsiveContainer
+                width="100%"
+                height={Math.max(chartData.length * 30, 200)}
+              >
                 <BarChart
                   accessibilityLayer
                   data={chartData}
                   layout="vertical"
+                  barGap={106}
+                  barSize={32}
                   margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 20,
+                    top: 10,
+                    right: 10,
+                    bottom: 10,
+                    left: 50,
                   }}
                 >
                   <XAxis type="number" dataKey="count" />

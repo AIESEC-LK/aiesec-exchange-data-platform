@@ -82,18 +82,28 @@ export default function DashboardFilters({
   setResponce,
   setFunctioName,
   setLoading,
+  setProjectInPage,
+  setStatusInPage,
 }: {
   product: string;
   setResponce: (values: any) => void;
   setFunctioName: (value: string) => void;
   setLoading: (value: boolean) => void;
+  setProjectInPage: (value: string) => void;
+  setStatusInPage: (value: string) => void;
 }) {
   const handleFunctionNameChange = (value: string) => {
     setFunctioName(value);
   };
+  const handleprojectChange = (value: string) => {
+    setProjectInPage(value);
+  };
+  const handleStatusChange = (value: string) => {
+    setStatusInPage(value);
+  };
 
   // Default values - mutable at runtime
-  const defaultFunctionName = "iGV";
+  const defaultFunctionName = product === "volunteer" ? "iGV" : "iGTa";
   const defaultLcTermStartDate = new Date(2025, 1, 1); // February 1, 2025 - LC Term Start Date updated to 2025
 
   const defaultFilterValues = {
@@ -199,6 +209,13 @@ export default function DashboardFilters({
     const formattedRequest = formatRequest(filterValues);
     console.log("Filter Values:", filterValues);
     console.log("Formatted Request:", formattedRequest);
+    handleStatusChange(formattedRequest.status);
+
+    if (product === "volunteer") {
+      handleprojectChange(formattedRequest.project);
+    } else {
+      handleprojectChange(formattedRequest.subProduct);
+    }
 
     await fetchData(formattedRequest);
   };
@@ -289,7 +306,7 @@ export default function DashboardFilters({
       to: new Date(),
     });
     setSelectedFunction(defaultFunctionName);
-  }, []);
+  }, [product]);
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
@@ -366,7 +383,9 @@ export default function DashboardFilters({
       {/* Status Selection */}
       <div className="w-full sm:w-auto">
         <Select
-          onValueChange={(value) => handleSelectChange("status", value)}
+          onValueChange={(value) => {
+            handleSelectChange("status", value);
+          }}
           value={filterValues.status}
         >
           <SelectTrigger className="w-full sm:w-32">
@@ -386,7 +405,9 @@ export default function DashboardFilters({
       {showProjectFilter && (
         <div className="w-full sm:w-auto">
           <Select
-            onValueChange={(value) => handleSelectChange("project", value)}
+            onValueChange={(value) => {
+              handleSelectChange("project", value);
+            }}
             value={filterValues.project}
           >
             <SelectTrigger className="w-full sm:w-32">
