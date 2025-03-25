@@ -32,49 +32,121 @@ import {
 } from "@/components/ui/popover";
 
 const hostMCs = [
-  {
-    value: "China",
-    label: "China",
-  },
-  {
-    value: "India",
-    label: "India",
-  },
-  {
-    value: "Indonesia",
-    label: "Indonesia",
-  },
-  {
-    value: "Malaysia",
-    label: "Malaysia",
-  },
-  {
-    value: "Ukraine",
-    label: "Ukraine",
-  },
+  { value: "Argentina", label: "Argentina" },
+  { value: "Bolivia", label: "Bolivia" },
+  { value: "Brazil", label: "Brazil" },
+  { value: "Canada", label: "Canada" },
+  { value: "Chile", label: "Chile" },
+  { value: "Colombia", label: "Colombia" },
+  { value: "Costa Rica", label: "Costa Rica" },
+  { value: "Dominican Republic", label: "Dominican Republic" },
+  { value: "Ecuador", label: "Ecuador" },
+  { value: "El Salvador", label: "El Salvador" },
+  { value: "Guatemala", label: "Guatemala" },
+  { value: "Mexico", label: "Mexico" },
+  { value: "Nicaragua", label: "Nicaragua" },
+  { value: "Panama", label: "Panama" },
+  { value: "Paraguay", label: "Paraguay" },
+  { value: "Peru", label: "Peru" },
+  { value: "United States", label: "United States" },
+  { value: "Venezuela", label: "Venezuela" },
+  { value: "Australia", label: "Australia" },
+  { value: "Bangladesh", label: "Bangladesh" },
+  { value: "Cambodia", label: "Cambodia" },
+  { value: "Mainland of China", label: "Mainland of China" },
+  { value: "Hong Kong", label: "Hong Kong" },
+  { value: "India", label: "India" },
+  { value: "Indonesia", label: "Indonesia" },
+  { value: "Japan", label: "Japan" },
+  { value: "Malaysia", label: "Malaysia" },
+  { value: "Mongolia", label: "Mongolia" },
+  { value: "Myanmar", label: "Myanmar" },
+  { value: "Nepal", label: "Nepal" },
+  { value: "New Zealand", label: "New Zealand" },
+  { value: "Pakistan", label: "Pakistan" },
+  { value: "Philippines", label: "Philippines" },
+  { value: "Singapore", label: "Singapore" },
+  { value: "Korea", label: "Korea" },
+  { value: "Sri Lanka", label: "Sri Lanka" },
+  { value: "Taiwan", label: "Taiwan" },
+  { value: "Thailand", label: "Thailand" },
+  { value: "Vietnam", label: "Vietnam" },
+  { value: "Albania", label: "Albania" },
+  { value: "Armenia", label: "Armenia" },
+  { value: "Austria", label: "Austria" },
+  { value: "Azerbaijan", label: "Azerbaijan" },
+  { value: "Belgium", label: "Belgium" },
+  { value: "Bosnia and Herzegovina", label: "Bosnia and Herzegovina" },
+  { value: "Bulgaria", label: "Bulgaria" },
+  { value: "Croatia", label: "Croatia" },
+  { value: "Czech Republic", label: "Czech Republic" },
+  { value: "Denmark", label: "Denmark" },
+  { value: "Estonia", label: "Estonia" },
+  { value: "Finland", label: "Finland" },
+  { value: "France", label: "France" },
+  { value: "Georgia", label: "Georgia" },
+  { value: "Germany", label: "Germany" },
+  { value: "Greece", label: "Greece" },
+  { value: "Hungary", label: "Hungary" },
+  { value: "Iceland", label: "Iceland" },
+  { value: "Italy", label: "Italy" },
+  { value: "Kazakhstan", label: "Kazakhstan" },
+  { value: "Kyrgyzstan", label: "Kyrgyzstan" },
+  { value: "Latvia", label: "Latvia" },
+  { value: "Lithuania", label: "Lithuania" },
+  { value: "Macedonia", label: "Macedonia" },
+  { value: "Moldova", label: "Moldova" },
+  { value: "Montenegro", label: "Montenegro" },
+  { value: "Norway", label: "Norway" },
+  { value: "Poland", label: "Poland" },
+  { value: "Portugal", label: "Portugal" },
+  { value: "Romania", label: "Romania" },
+  { value: "Russia", label: "Russia" },
+  { value: "Serbia", label: "Serbia" },
+  { value: "Slovakia", label: "Slovakia" },
+  { value: "Spain", label: "Spain" },
+  { value: "Sweden", label: "Sweden" },
+  { value: "Switzerland", label: "Switzerland" },
+  { value: "The Netherlands", label: "The Netherlands" },
+  { value: "Türkiye", label: "Türkiye" },
+  { value: "Ukraine", label: "Ukraine" },
+  { value: "United Kingdom", label: "United Kingdom" },
+  { value: "Algeria", label: "Algeria" },
+  { value: "Bahrain", label: "Bahrain" },
+  { value: "Benin", label: "Benin" },
+  { value: "Burkina Faso", label: "Burkina Faso" },
+  { value: "Cabo Verde", label: "Cabo Verde" },
+  { value: "Cameroon", label: "Cameroon" },
+  { value: "Cote D'Ivoire", label: "Cote D'Ivoire" },
+  { value: "Egypt", label: "Egypt" },
+  { value: "Ethiopia", label: "Ethiopia" },
+  { value: "Ghana", label: "Ghana" },
+  { value: "Jordan", label: "Jordan" },
+  { value: "Kenya", label: "Kenya" },
+  { value: "Kuwait", label: "Kuwait" },
+  { value: "Lebanon", label: "Lebanon" },
+  { value: "Liberia", label: "Liberia" },
+  { value: "Malawi", label: "Malawi" },
+  { value: "Morocco", label: "Morocco" },
+  { value: "Mozambique", label: "Mozambique" },
+  { value: "Namibia", label: "Namibia" },
+  { value: "Nigeria", label: "Nigeria" },
+  { value: "Rwanda", label: "Rwanda" },
+  { value: "Senegal", label: "Senegal" },
+  { value: "South Africa", label: "South Africa" },
+  { value: "Tanzania", label: "Tanzania" },
+  { value: "Togo", label: "Togo" },
+  { value: "Tunisia", label: "Tunisia" },
+  { value: "Uganda", label: "Uganda" },
+  { value: "United Arab Emirates", label: "United Arab Emirates" },
 ];
 
 const hostLCs = [
-  {
-    value: "Istanbul",
-    label: "Istanbul",
-  },
-  {
-    value: "Bardo",
-    label: "Bardo",
-  },
-  {
-    value: "Helwan",
-    label: "Helwan",
-  },
-  {
-    value: "Mumbai",
-    label: "Mumbai",
-  },
-  {
-    value: "Hyderabad",
-    label: "Hyderabad",
-  },
+  { value: "Istanbul", label: "Istanbul" },
+  { value: "Bardo", label: "Bardo" },
+  { value: "Helwan", label: "Helwan" },
+  { value: "Mumbai", label: "Mumbai" },
+  { value: "Hyderabad", label: "Hyderabad" },
 ];
 
 export default function DashboardFilters({
@@ -82,31 +154,23 @@ export default function DashboardFilters({
   setResponce,
   setFunctioName,
   setLoading,
-  setProjectInPage,
-  setStatusInPage,
+  setSelectedStatus,
 }: {
   product: string;
   setResponce: (values: any) => void;
   setFunctioName: (value: string) => void;
   setLoading: (value: boolean) => void;
-  setProjectInPage: (value: string) => void;
-  setStatusInPage: (value: string) => void;
+  setSelectedStatus: (value: string | null) => void;
 }) {
   const handleFunctionNameChange = (value: string) => {
     setFunctioName(value);
   };
-  const handleprojectChange = (value: string) => {
-    setProjectInPage(value);
-  };
-  const handleStatusChange = (value: string) => {
-    setStatusInPage(value);
-  };
 
-  // Default values - mutable at runtime
-  const defaultFunctionName = product === "volunteer" ? "iGV" : "iGTa";
-  const defaultLcTermStartDate = new Date(2025, 1, 1); // February 1, 2025 - LC Term Start Date updated to 2025
+  const defaultFunctionName_v = "iGV";
+  const defaultFunctionName_t = "iGTe";
+  const defaultLcTermStartDate = new Date(2025, 1, 1);
 
-  const defaultFilterValues = {
+  const getDefaultFilterValues = (defaultFunctionName: string) => ({
     localLc: "",
     from: defaultLcTermStartDate.toISOString().split("T")[0],
     to: new Date().toISOString().split("T")[0],
@@ -116,7 +180,7 @@ export default function DashboardFilters({
     status: "",
     project: "",
     duration: "",
-  };
+  });
 
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
     from: defaultLcTermStartDate,
@@ -124,8 +188,16 @@ export default function DashboardFilters({
   });
   const [selectedFunction, setSelectedFunction] = React.useState<
     string | undefined
-  >(defaultFunctionName);
-  const [filterValues, setFilterValues] = React.useState(defaultFilterValues);
+  >(
+    product === "talent/teacher" ? defaultFunctionName_t : defaultFunctionName_v
+  );
+  const [filterValues, setFilterValues] = React.useState(
+    getDefaultFilterValues(
+      product === "talent/teacher"
+        ? defaultFunctionName_t
+        : defaultFunctionName_v
+    )
+  );
   const [McComboOpen, setMcComboOpen] = React.useState(false);
   const [LcComboOpen, setLcComboOpen] = React.useState(false);
   const [hostMcValue, setHostMcValue] = React.useState("");
@@ -136,12 +208,15 @@ export default function DashboardFilters({
   const v_products = ["oGV", "iGV"];
 
   const t_projects = [
+    "Education",
+    "Sales & Business Development",
+    "Business Administration",
     "Information Technology",
-    "Engineering",
-    "Business Developement",
     "Marketing",
-    "Teaching",
+    "Engineering",
     "Other",
+    "Finance",
+    "Business Development",
   ];
 
   const gv_projects = [
@@ -171,17 +246,14 @@ export default function DashboardFilters({
     handleSelectChange("product", value);
   };
 
-  const showProjectFilter = !(
-    selectedFunction === "iGTe" || selectedFunction === "oGTe"
-  );
-  const isInternal =
-    selectedFunction === "iGV" ||
-    selectedFunction === "iGTa" ||
-    selectedFunction === "iGTe";
+  const showProjectFilter = product === "volunteer";
+  const showWorkfieldFilter = product === "talent/teacher";
+
+  const isInternal = ["iGV", "iGTa", "iGTe"].includes(selectedFunction || "");
   const isTalentTeacher = product === "talent/teacher";
   const mcLabel = isInternal ? "Home MC" : "Host MC";
   const lcLabel = isInternal ? "Home LC" : "Host LC";
-  const projectLabel = isTalentTeacher ? "Workfield" : "Project";
+  const projectLabel = isTalentTeacher ? "Workfield" : "Project"; // projectLabel is still used for placeholder
 
   const handleDateRangeChange = (newDateRange: DateRange | undefined) => {
     setDateRange(newDateRange);
@@ -191,11 +263,13 @@ export default function DashboardFilters({
 
   const handleSelectChange = (name: string, value: string) => {
     setFilterValues((prev: any) => ({ ...prev, [name]: value }));
+    if (name === "status") {
+      setSelectedStatus(value);
+    }
   };
 
   const handleDateChange = (range: DateRange | undefined) => {
     setDateRange(range);
-
     setFilterValues((prev: any) => ({
       ...prev,
       from: range?.from ? range.from.toISOString().split("T")[0] : "",
@@ -205,31 +279,24 @@ export default function DashboardFilters({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const formattedRequest = formatRequest(filterValues);
     console.log("Filter Values:", filterValues);
     console.log("Formatted Request:", formattedRequest);
-    handleStatusChange(formattedRequest.status);
-
-    if (product === "volunteer") {
-      handleprojectChange(formattedRequest.project);
-    } else {
-      handleprojectChange(formattedRequest.subProduct);
-    }
-
     await fetchData(formattedRequest);
   };
 
   const handleClearFilters = () => {
-    setFilterValues(defaultFilterValues);
-    setDateRange({
-      from: defaultLcTermStartDate,
-      to: new Date(),
-    });
-    setSelectedFunction(undefined); // Clear function selection
-    setFunctioName(defaultFunctionName);
-    setHostMcValue(""); // Clear Host MC selection
-    setHostLcValue(""); // Clear Host LC selection
+    const defaultFuncName =
+      product === "talent/teacher"
+        ? defaultFunctionName_t
+        : defaultFunctionName_v;
+    setFilterValues(getDefaultFilterValues(defaultFuncName));
+    setDateRange({ from: defaultLcTermStartDate, to: new Date() });
+    setSelectedFunction(undefined); // Set to undefined to show placeholder
+    setFunctioName(defaultFuncName);
+    setHostMcValue("");
+    setHostLcValue("");
+    setSelectedStatus(null);
   };
 
   function formatRequest(filterValues: any) {
@@ -259,16 +326,10 @@ export default function DashboardFilters({
     }
 
     if (product === "volunteer") {
-      formattedRequest = {
-        ...formattedRequest,
-        project: filterValues.project,
-      };
+      formattedRequest.project = filterValues.project;
     } else if (product === "talent/teacher") {
-      formattedRequest = {
-        ...formattedRequest,
-        subProduct: filterValues.project,
-        duration: filterValues.duration,
-      };
+      formattedRequest.subProduct = filterValues.project;
+      formattedRequest.duration = filterValues.duration;
     }
 
     setRequest(formattedRequest);
@@ -285,32 +346,33 @@ export default function DashboardFilters({
       });
       if (!response.ok) throw new Error("Failed to fetch data");
       const responseData = await response.json();
-      console.log("Fetched Data:", responseData);
       setResponce(responseData);
     } catch (err) {
       console.error("Fetch Error:", err);
     } finally {
       setLoading(false);
-      console.log("Data fetch operation completed.");
     }
   };
 
   React.useEffect(() => {
-    const initialRequest = formatRequest(defaultFilterValues);
-    console.log("Initial Default Request:", initialRequest);
+    let defaultFuncName = defaultFunctionName_v;
+    if (product === "talent/teacher") {
+      defaultFuncName = defaultFunctionName_t;
+      setSelectedFunction(defaultFunctionName_t);
+    } else {
+      setSelectedFunction(defaultFunctionName_v);
+    }
+    const initialRequest = formatRequest(
+      getDefaultFilterValues(defaultFuncName)
+    );
     fetchData(initialRequest);
-    setFunctioName(defaultFunctionName);
-    setFilterValues(defaultFilterValues);
-    setDateRange({
-      from: defaultLcTermStartDate,
-      to: new Date(),
-    });
-    setSelectedFunction(defaultFunctionName);
-  }, [product]);
+    setFunctioName(defaultFuncName);
+    setFilterValues(getDefaultFilterValues(defaultFuncName));
+    setDateRange({ from: defaultLcTermStartDate, to: new Date() });
+  }, [product]); // React to product changes
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex flex-wrap gap-4 items-center justify-center md:justify-between">
-      {/* Apply and Clear Filters Buttons */}
       <div className="w-full sm:w-auto flex justify-center sm:justify-start gap-2">
         <Button variant="outline" size="sm" onClick={handleSubmit}>
           Apply Filters
@@ -320,7 +382,6 @@ export default function DashboardFilters({
         </Button>
       </div>
 
-      {/* Entity Selection */}
       <div className="w-full sm:w-auto">
         <Select
           onValueChange={(value) => handleSelectChange("localLc", value)}
@@ -343,7 +404,6 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {/* Date Picker */}
       <div className="w-full sm:w-auto">
         <DatePickerWithRange
           value={dateRange}
@@ -351,12 +411,9 @@ export default function DashboardFilters({
         />
       </div>
 
-      {/* Functions Selection */}
       <div className="w-full sm:w-auto">
         <Select
-          onValueChange={(e) => {
-            handleFunctionSelect(e);
-          }}
+          onValueChange={(e) => handleFunctionSelect(e)}
           value={selectedFunction}
         >
           <SelectTrigger className="w-full sm:w-32">
@@ -380,7 +437,6 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {/* Status Selection */}
       <div className="w-full sm:w-auto">
         <Select
           onValueChange={(value) => {
@@ -401,7 +457,6 @@ export default function DashboardFilters({
         </Select>
       </div>
 
-      {/* Project Filter */}
       {showProjectFilter && (
         <div className="w-full sm:w-auto">
           <Select
@@ -414,25 +469,56 @@ export default function DashboardFilters({
               <SelectValue placeholder={projectLabel} />
             </SelectTrigger>
             <SelectContent>
-              {product === "volunteer"
-                ? gv_projects.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      {p}
-                    </SelectItem>
-                  ))
-                : product === "talent/teacher"
-                ? t_projects.map((p) => (
-                    <SelectItem key={p} value={p}>
-                      {p}
-                    </SelectItem>
-                  ))
-                : null}
+              {gv_projects.map((p) => (
+                <SelectItem key={p} value={p}>
+                  {p}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
       )}
 
-      {/* MC Selection */}
+      {showWorkfieldFilter && (
+        <div className="w-full sm:w-auto">
+          <Select
+            onValueChange={(value) => handleSelectChange("project", value)}
+            value={filterValues.project}
+          >
+            <SelectTrigger className="w-full sm:w-32">
+              <SelectValue placeholder={projectLabel} />
+            </SelectTrigger>
+            <SelectContent>
+              {gv_projects.map((p) => (
+                <SelectItem key={p} value={p}>
+                  {p}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {showWorkfieldFilter && (
+        <div className="w-full sm:w-auto">
+          <Select
+            onValueChange={(value) => handleSelectChange("project", value)}
+            value={filterValues.project}
+          >
+            <SelectTrigger className="w-full sm:w-32">
+              <SelectValue placeholder={projectLabel} />
+            </SelectTrigger>
+            <SelectContent>
+              {t_projects.map((p) => (
+                <SelectItem key={p} value={p}>
+                  {p}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
       <div className="w-full sm:w-auto">
         <Popover open={McComboOpen} onOpenChange={setMcComboOpen}>
           <PopoverTrigger asChild>
@@ -482,7 +568,6 @@ export default function DashboardFilters({
         </Popover>
       </div>
 
-      {/* LC Selection */}
       <div className="w-full sm:w-auto">
         <Popover open={LcComboOpen} onOpenChange={setLcComboOpen}>
           <PopoverTrigger asChild>
@@ -532,7 +617,6 @@ export default function DashboardFilters({
         </Popover>
       </div>
 
-      {/* Duration Filter (Hidden for Global Volunteer) */}
       {product !== "volunteer" && (
         <div className="w-full sm:w-auto">
           <Select
