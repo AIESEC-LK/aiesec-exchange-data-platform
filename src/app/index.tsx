@@ -1,6 +1,5 @@
 // pages/index.tsx
 import React, { useState, useEffect } from "react";
-import SimpleMap from "../components/WorldMap";
 
 const IndexPage: React.FC = () => {
   const [geoJsonData, setGeoJsonData] = useState(null);
@@ -21,12 +20,7 @@ const IndexPage: React.FC = () => {
 
   return (
     <div>
-      <h1>Simple Map</h1>
-      {geoJsonData ? (
-        <SimpleMap geoJson={geoJsonData} width={600} height={400} />
-      ) : (
-        <p>Loading map data...</p>
-      )}
+  
     </div>
   );
 };

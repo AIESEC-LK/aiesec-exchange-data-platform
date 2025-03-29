@@ -98,8 +98,8 @@ export function DatePickerWithRange({
   };
 
   const handlePresetSelect = (range: DateRange) => {
-    setStartDate(range.from);
-    setEndDate(range.to);
+    setStartDate(range.from || null);
+    setEndDate(range.to || null );
     onChange(range);
     setOpen(false);
   };
